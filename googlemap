@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silo Sensor Mapper</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #4ade80;
+    --accent2: #22c55e;
+    --text: #e8eaf2;
+    --muted: #7b82a0;
+    --danger: #f87171;
+    --gold: #fbbf24;
+    --font: 'IBM Plex Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    z-index: 100;
+  }
+
+  .logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .logo span { color: var(--muted); font-weight: 400; }
+
+  .addr-row {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    min-width: 280px;
+  }
+
+  #addressInput {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 12px;
+    font-family: var(--font);
+    font-size: 12px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #addressInput:focus { border-color: var(--accent); }
+  #addressInput::placeholder { color: var(--muted); }
+
+  button {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 7px 14px;
+    border: 1px solid;
+    transition: all 0.15s;
+  }
+
+  .btn-go {
+    background: var(--accent);
+    color: #0f1117;
+    border-color: var(--accent);
+  }
+  .btn-go:hover { background: var(--accent2); border-color: var(--accent2); }
+
+  .btn-lock {
+    background: transparent;
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+  .btn-lock:hover { background: rgba(251,191,36,0.1); }
+  .btn-lock.locked {
+    background: var(--gold);
+    color: #0f1117;
+  }
+
+  .btn-add {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .btn-add:hover { background: rgba(74,222,128,0.08); }
+  .btn-add:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .btn-clear {
+    background: transparent;
+    color: var(--danger);
+    border-color: var(--danger);
+  }
+  .btn-clear:hover { background: rgba(248,113,113,0.08); }
+
+  .status-bar {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 4px 18px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.05em;
+  }
+
+  .status-bar .locked-msg { color: var(--gold); }
+  .status-bar .ok-msg { color: var(--accent); }
+
+  .main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  #map-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #1a1d27;
+  }
+
+  #map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  .map-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    pointer-events: none;
+  }
+
+  .map-placeholder .icon {
+    font-size: 48px;
+    opacity: 0.3;
+  }
+
+  #overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  #overlay.interactive { pointer-events: all; }
+
+  .sensor {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    user-select: none;
+    pointer-events: all;
+  }
+
+  .sensor:active { cursor: grabbing; }
+
+  .sensor-ring {
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: rgba(74, 222, 128, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: border-color 0.15s, background 0.15s;
+    box-shadow: 0 0 0 1px rgba(74,222,128,0.2), inset 0 0 12px rgba(74,222,128,0.08);
+  }
+
+  .sensor.selected .sensor-ring {
+    border-color: var(--gold);
+    background: rgba(251, 191, 36, 0.18);
+    box-shadow: 0 0 0 1px rgba(251,191,36,0.3), inset 0 0 12px rgba(251,191,36,0.1);
+  }
+
+  .sensor-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .sensor.selected .sensor-dot { background: var(--gold); }
+
+  .sensor-label {
+    position: absolute;
+    top: calc(50% + var(--r) + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15,17,23,0.88);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.04em;
+  }
+
+  .sensor.selected .sensor-label {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .resize-handle {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: se-resize;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .sensor:hover .resize-handle,
+  .sensor.selected .resize-handle { opacity: 1; }
+  .sensor.selected .resize-handle { background: var(--gold); }
+
+  #sidebar {
+    width: 240px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 12px 14px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  #sensor-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #sensor-list::-webkit-scrollbar { width: 4px; }
+  #sensor-list::-webkit-scrollbar-track { background: transparent; }
+  #sensor-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .sensor-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .sensor-item:hover { border-color: var(--muted); }
+  .sensor-item.active { border-color: var(--gold); }
+
+  .sensor-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sensor-item-id {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .sensor-item-del {
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0 2px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+  }
+  .sensor-item-del:hover { opacity: 1; background: none; }
+
+  .sensor-name-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    width: 100%;
+    padding: 2px 0;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .sensor-name-input:focus { border-bottom-color: var(--accent); }
+
+  .sensor-size-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .sensor-size-row input[type=range] {
+    flex: 1;
+    accent-color: var(--accent);
+    height: 3px;
+  }
+
+  .sensor-size-val {
+    min-width: 28px;
+    text-align: right;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .sidebar-footer {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sidebar-footer button { width: 100%; }
+
+  .empty-state {
+    padding: 24px 14px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Silo<span>Mapper</span></div>
+  <div class="addr-row">
+    <input id="addressInput" type="text" placeholder="Enter address or farm location..." autocomplete="off" />
+    <button class="btn-go" onclick="loadAddress()">Go</button>
+  </div>
+  <button class="btn-lock" id="lockBtn" onclick="toggleLock()" disabled>Lock Map</button>
+  <button class="btn-add" id="addBtn" onclick="addSensor()" disabled>+ Sensor</button>
+  <button class="btn-clear" onclick="clearAll()">Clear All</button>
+</header>
+
+<div class="status-bar" id="statusBar">
+  Enter an address above to load satellite view — then lock the map to place sensors.
+</div>
+
+<div class="main">
+  <div id="map-container">
+    <div class="map-placeholder" id="placeholder">
+      <div class="icon">🛰️</div>
+      <div>No location loaded</div>
+      <div style="font-size:11px">Enter an address and click Go</div>
+    </div>
+    <div id="overlay"></div>
+  </div>
+
+  <div id="sidebar">
+    <div class="sidebar-header">Sensors</div>
+    <div id="sensor-list">
+      <div class="empty-state" id="emptyState">
+        No sensors placed.<br>Lock the map and<br>click "+ Sensor" to begin.
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <button class="btn-add" id="sideAddBtn" onclick="addSensor()" disabled>+ Add Sensor</button>
+      <button class="btn-clear" onclick="clearSensors()">Remove All Sensors</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let isLocked = false;
+let mapLoaded = false;
+let sensors = [];
+let selectedId = null;
+let sensorCounter = 0;
+let dragState = null;
+let resizeState = null;
+
+const overlay = document.getElementById('overlay');
+const sensorList = document.getElementById('sensor-list');
+const statusBar = document.getElementById('statusBar');
+const lockBtn = document.getElementById('lockBtn');
+const addBtn = document.getElementById('addBtn');
+const sideAddBtn = document.getElementById('sideAddBtn');
+const mapContainer = document.getElementById('map-container');
+const placeholder = document.getElementById('placeholder');
+
+function setStatus(msg, type) {
+  statusBar.innerHTML = '';
+  const span = document.createElement('span');
+  span.textContent = msg;
+  if (type === 'locked') span.className = 'locked-msg';
+  if (type === 'ok') span.className = 'ok-msg';
+  statusBar.appendChild(span);
+}
+
+function loadAddress() {
+  const addr = document.getElementById('addressInput').value.trim();
+  if (!addr) return;
+  const existing = document.getElementById('map-iframe');
+  if (existing) existing.remove();
+  const encoded = encodeURIComponent(addr);
+  const src = `https://maps.google.com/maps?q=${encoded}&t=k&z=18&output=embed&iwloc=near`;
+  const iframe = document.createElement('iframe');
+  iframe.id = 'map-iframe';
+  iframe.src = src;
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+  iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;position:absolute;inset:0;';
+  mapContainer.insertBefore(iframe, overlay);
+  placeholder.style.display = 'none';
+  mapLoaded = true;
+  lockBtn.disabled = false;
+  setStatus(`Loaded: "${addr}" — Click "Lock Map" to freeze view and start placing sensors.`, 'ok');
+  if (isLocked) {
+    isLocked = false;
+    lockBtn.textContent = 'Lock Map';
+    lockBtn.classList.remove('locked');
+    overlay.classList.remove('interactive');
+    iframe.style.pointerEvents = 'all';
+    addBtn.disabled = true;
+    sideAddBtn.disabled = true;
+  }
+}
+
+document.getElementById('addressInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') loadAddress();
+});
+
+function toggleLock() {
+  if (!mapLoaded) return;
+  isLocked = !isLocked;
+  const iframe = document.getElementById('map-iframe');
+  if (isLocked) {
+    lockBtn.textContent = 'Unlock Map';
+    lockBtn.classList.add('locked');
+    if (iframe) iframe.style.pointerEvents = 'none';
+    overlay.classList.add('interactive');
+    addBtn.disabled = false;
+    sideAddBtn.disabled = false;
+    setStatus('Map locked — drag sensors into position. Rename in the sidebar panel.', 'locked');
+  } else {
+    lockBtn.textContent = 'Lock Map';
+    lockBtn.classList.remove('locked');
+    if (iframe) iframe.style.pointerEvents = 'all';
+    overlay.classList.remove('interactive');
+    addBtn.disabled = true;
+    sideAddBtn.disabled = true;
+    setStatus('Map unlocked — scroll and zoom freely. Lock again to adjust sensors.');
+  }
+}
+
+function addSensor() {
+  if (!isLocked) return;
+  sensorCounter++;
+  const rect = overlay.getBoundingClientRect();
+  const sensor = {
+    id: sensorCounter,
+    name: `Silo ${sensorCounter}`,
+    x: rect.width / 2 + (Math.random() - 0.5) * 80,
+    y: rect.height / 2 + (Math.random() - 0.5) * 80,
+    r: 36
+  };
+  sensors.push(sensor);
+  renderSensors();
+  selectSensor(sensor.id);
+  setStatus(`Sensor "${sensor.name}" added — drag to position, resize with corner handle.`, 'ok');
+}
+
+function selectSensor(id) {
+  selectedId = id;
+  renderSensors();
+  renderSidebar();
+}
+
+function deleteSensor(id) {
+  sensors = sensors.filter(s => s.id !== id);
+  if (selectedId === id) selectedId = null;
+  renderSensors();
+  renderSidebar();
+}
+
+function clearSensors() {
+  sensors = [];
+  selectedId = null;
+  renderSensors();
+  renderSidebar();
+}
+
+function clearAll() {
+  clearSensors();
+  const iframe = document.getElementById('map-iframe');
+  if (iframe) iframe.remove();
+  placeholder.style.display = 'flex';
+  mapLoaded = false;
+  isLocked = false;
+  lockBtn.textContent = 'Lock Map';
+  lockBtn.classList.remove('locked');
+  lockBtn.disabled = true;
+  addBtn.disabled = true;
+  sideAddBtn.disabled = true;
+  overlay.classList.remove('interactive');
+  sensorCounter = 0;
+  setStatus('Enter an address above to load satellite view — then lock the map to place sensors.');
+}
+
+function renderSensors() {
+  overlay.innerHTML = '';
+  sensors.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'sensor' + (s.id === selectedId ? ' selected' : '');
+    el.dataset.id = s.id;
+    el.style.left = s.x + 'px';
+    el.style.top = s.y + 'px';
+    el.style.setProperty('--r', s.r + 'px');
+
+    const ring = document.createElement('div');
+    ring.className = 'sensor-ring';
+    ring.style.width = (s.r * 2) + 'px';
+    ring.style.height = (s.r * 2) + 'px';
+
+    const dot = document.createElement('div');
+    dot.className = 'sensor-dot';
+    ring.appendChild(dot);
+
+    const label = document.createElement('div');
+    label.className = 'sensor-label';
+    label.textContent = s.name;
+
+    const handle = document.createElement('div');
+    handle.className = 'resize-handle';
+    handle.dataset.resize = s.id;
+
+    el.appendChild(ring);
+    el.appendChild(label);
+    el.appendChild(handle);
+
+    el.addEventListener('mousedown', startDrag);
+    handle.addEventListener('mousedown', startResize);
+    el.addEventListener('click', () => { if (!dragState) selectSensor(s.id); });
+
+    overlay.appendChild(el);
+  });
+}
+
+function startDrag(e) {
+  if (e.target.dataset.resize) return;
+  if (!isLocked) return;
+  e.preventDefault();
+  const id = parseInt(e.currentTarget.dataset.id);
+  selectSensor(id);
+  const sensor = sensors.find(s => s.id === id);
+  dragState = { id, startX: e.clientX - sensor.x, startY: e.clientY - sensor.y };
+}
+
+function startResize(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  if (!isLocked) return;
+  const id = parseInt(e.target.dataset.resize);
+  selectSensor(id);
+  const sensor = sensors.find(s => s.id === id);
+  const rect = overlay.getBoundingClientRect();
+  resizeState = { id, cx: rect.left + sensor.x, cy: rect.top + sensor.y };
+}
+
+document.addEventListener('mousemove', e => {
+  if (dragState) {
+    const sensor = sensors.find(s => s.id === dragState.id);
+    if (!sensor) return;
+    const rect = overlay.getBoundingClientRect();
+    sensor.x = Math.max(0, Math.min(rect.width, e.clientX - dragState.startX));
+    sensor.y = Math.max(0, Math.min(rect.height, e.clientY - dragState.startY));
+    renderSensors();
+  }
+  if (resizeState) {
+    const sensor = sensors.find(s => s.id === resizeState.id);
+    if (!sensor) return;
+    const dx = e.clientX - resizeState.cx;
+    const dy = e.clientY - resizeState.cy;
+    sensor.r = Math.max(16, Math.min(160, Math.sqrt(dx * dx + dy * dy)));
+    renderSensors();
+    const slider = document.querySelector(`.size-slider[data-id="${sensor.id}"]`);
+    const val = document.querySelector(`.size-val[data-id="${sensor.id}"]`);
+    if (slider) slider.value = Math.round(sensor.r);
+    if (val) val.textContent = Math.round(sensor.r) + 'px';
+  }
+});
+
+document.addEventListener('mouseup', () => { dragState = null; resizeState = null; });
+
+function renderSidebar() {
+  sensorList.innerHTML = '';
+  if (sensors.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = 'No sensors placed.<br>Lock the map and<br>click "+ Sensor" to begin.';
+    sensorList.appendChild(empty);
+    return;
+  }
+  sensors.forEach(s => {
+    const item = document.createElement('div');
+    item.className = 'sensor-item' + (s.id === selectedId ? ' active' : '');
+    item.onclick = () => selectSensor(s.id);
+
+    const top = document.createElement('div');
+    top.className = 'sensor-item-top';
+
+    const idLabel = document.createElement('div');
+    idLabel.className = 'sensor-item-id';
+    idLabel.textContent = `SENSOR #${String(s.id).padStart(2, '0')}`;
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'sensor-item-del';
+    delBtn.textContent = '×';
+    delBtn.onclick = e => { e.stopPropagation(); deleteSensor(s.id); };
+
+    top.appendChild(idLabel);
+    top.appendChild(delBtn);
+
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.className = 'sensor-name-input';
+    nameInput.value = s.name;
+    nameInput.placeholder = 'Sensor name...';
+    nameInput.onclick = e => e.stopPropagation();
+    nameInput.oninput = e => { s.name = e.target.value; renderSensors(); };
+
+    const sizeRow = document.createElement('div');
+    sizeRow.className = 'sensor-size-row';
+    sizeRow.innerHTML = '<span>Size</span>';
+
+    const slider = document.createElement('input');
+    slider.type = 'range';
+    slider.min = 16; slider.max = 160; slider.step = 1;
+    slider.value = Math.round(s.r);
+    slider.className = 'size-slider';
+    slider.dataset.id = s.id;
+    slider.onclick = e => e.stopPropagation();
+
+    const sizeVal = document.createElement('span');
+    sizeVal.className = 'size-val';
+    sizeVal.dataset.id = s.id;
+    sizeVal.textContent = Math.round(s.r) + 'px';
+
+    slider.oninput = e => {
+      s.r = parseInt(e.target.value);
+      sizeVal.textContent = s.r + 'px';
+      renderSensors();
+    };
+
+    sizeRow.appendChild(slider);
+    sizeRow.appendChild(sizeVal);
+
+    item.appendChild(top);
+    item.appendChild(nameInput);
+    item.appendChild(sizeRow);
+    sensorList.appendChild(item);
+  });
+}
+
+renderSidebar();
+</script>
+</body>
+</html>
