@@ -48,316 +48,179 @@
   }
 
   .logo {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    white-space: nowrap;
-    text-transform: uppercase;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--accent); white-space: nowrap; text-transform: uppercase;
   }
   .logo span { color: var(--muted); font-weight: 400; }
 
-  .addr-row {
-    display: flex;
-    gap: 6px;
-    flex: 1;
-    min-width: 220px;
-  }
+  .addr-row { display: flex; gap: 6px; flex: 1; min-width: 220px; }
 
   #addressInput {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 6px 10px;
-    font-family: var(--font);
-    font-size: 11px;
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.2s;
+    flex: 1; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 6px 10px; font-family: var(--font);
+    font-size: 11px; border-radius: 4px; outline: none; transition: border-color 0.2s;
   }
   #addressInput:focus { border-color: var(--accent); }
   #addressInput::placeholder { color: var(--muted); }
 
-  .toolbar-divider {
-    width: 1px;
-    height: 28px;
-    background: var(--border);
-    margin: 0 2px;
-    flex-shrink: 0;
-  }
+  .toolbar-divider { width: 1px; height: 28px; background: var(--border); margin: 0 2px; flex-shrink: 0; }
 
   button {
-    font-family: var(--font);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 4px;
-    padding: 6px 11px;
-    border: 1px solid;
-    transition: all 0.15s;
-    white-space: nowrap;
+    font-family: var(--font); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase; cursor: pointer;
+    border-radius: 4px; padding: 6px 11px; border: 1px solid;
+    transition: all 0.15s; white-space: nowrap;
   }
 
   .btn-go { background: var(--accent); color: #0f1117; border-color: var(--accent); }
   .btn-go:hover { background: var(--accent2); border-color: var(--accent2); }
-
   .btn-lock { background: transparent; color: var(--gold); border-color: var(--gold); }
   .btn-lock:hover { background: rgba(251,191,36,0.1); }
   .btn-lock.locked { background: var(--gold); color: #0f1117; }
-
   .btn-sensor { background: transparent; color: var(--accent); border-color: var(--accent); }
   .btn-sensor:hover { background: rgba(74,222,128,0.08); }
-
   .btn-ltx { background: transparent; color: var(--ltx); border-color: var(--ltx); }
   .btn-ltx:hover { background: rgba(239,68,68,0.08); }
-
   .btn-lora { background: transparent; color: var(--lora); border-color: var(--lora); }
   .btn-lora:hover { background: rgba(74,222,128,0.08); }
   .btn-lora.active { background: var(--lora); color: #0f1117; }
-
   .btn-wire { background: transparent; color: var(--wire); border-color: var(--wire); }
   .btn-wire:hover { background: rgba(239,68,68,0.08); }
   .btn-wire.active { background: var(--wire); color: #fff; }
-
   .btn-export { background: transparent; color: #a78bfa; border-color: #a78bfa; }
   .btn-export:hover { background: rgba(167,139,250,0.08); }
-
   .btn-clear { background: transparent; color: var(--danger); border-color: var(--danger); }
   .btn-clear:hover { background: rgba(248,113,113,0.08); }
-
   button:disabled { opacity: 0.3; cursor: not-allowed; }
 
   .status-bar {
-    font-size: 10px;
-    color: var(--muted);
-    padding: 3px 14px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    letter-spacing: 0.05em;
-    min-height: 22px;
-    display: flex;
-    align-items: center;
+    font-size: 10px; color: var(--muted); padding: 3px 14px;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    letter-spacing: 0.05em; min-height: 22px; display: flex; align-items: center;
   }
-  .status-bar .locked-msg { color: var(--gold); }
-  .status-bar .ok-msg { color: var(--accent); }
-  .status-bar .warn-msg { color: #fb923c; }
+  .locked-msg { color: var(--gold); }
+  .ok-msg { color: var(--accent); }
+  .warn-msg { color: #fb923c; }
 
   .main { flex: 1; display: flex; overflow: hidden; }
 
   #map-container {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background: #c8cdd8;
+    flex: 1; position: relative; overflow: hidden; background: #3a4052;
   }
 
-  .map-placeholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: #888;
-    font-size: 13px;
-    letter-spacing: 0.06em;
-    pointer-events: none;
-    background: #d8dce6;
+  /* Layer 1: ArcGIS tile canvas — always visible */
+  #tile-canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
     z-index: 1;
-  }
-  .map-placeholder .icon { font-size: 44px; opacity: 0.4; }
-
-  #map-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     display: none;
-    z-index: 1;
   }
 
-  /* Keep the interactive iframe for panning/zooming reference, hidden during lock */
+  /* Layer 2: Google Maps iframe — sits on top when unlocked */
   #map-iframe-wrap {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
+    position: absolute; inset: 0; z-index: 2;
+    display: none;
   }
   #map-iframe-wrap iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-    filter: brightness(1.4) saturate(0.65);
+    width: 100%; height: 100%; border: none; display: block;
+    filter: brightness(1.35) saturate(0.7);
   }
 
-  /* When locked, iframe is hidden and static image shown */
-  #map-container.locked-view #map-iframe-wrap { display: none; }
-  #map-container.locked-view #map-img { display: block; }
-
+  /* Layer 3: SVG lines */
   #line-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 8;
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 8;
   }
 
+  /* Layer 4: Device overlay */
   #overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 10;
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 10;
   }
   #overlay.interactive { pointer-events: all; }
   #overlay.line-mode { cursor: crosshair; pointer-events: all; }
 
-  /* ── Sensor: solid green circle ── */
+  .map-placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+    color: #8a90a0; font-size: 13px; letter-spacing: 0.06em;
+    pointer-events: none; background: #2a2f3f; z-index: 0;
+  }
+  .map-placeholder .icon { font-size: 44px; opacity: 0.35; }
+
+  /* Sensor: solid green circle */
   .sensor {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    cursor: grab;
-    user-select: none;
-    pointer-events: all;
+    position: absolute; transform: translate(-50%, -50%);
+    cursor: grab; user-select: none; pointer-events: all;
   }
   .sensor:active { cursor: grabbing; }
-
   .sensor-ring {
-    border-radius: 50%;
-    background: #22c55e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+    border-radius: 50%; background: #22c55e;
+    display: flex; align-items: center; justify-content: center; position: relative;
   }
-  .sensor.selected .sensor-ring {
-    background: var(--gold);
-    outline: 3px solid #fff;
-    outline-offset: 1px;
-  }
+  .sensor.selected .sensor-ring { background: #fbbf24; outline: 3px solid #fff; outline-offset: 1px; }
 
-  /* ── LTX: solid red square ── */
+  /* LTX: solid red square */
   .ltx-device {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    cursor: grab;
-    user-select: none;
-    pointer-events: all;
+    position: absolute; transform: translate(-50%, -50%);
+    cursor: grab; user-select: none; pointer-events: all;
   }
   .ltx-device:active { cursor: grabbing; }
+  .ltx-box { background: #ef4444; display: flex; align-items: center; justify-content: center; }
+  .ltx-device.selected .ltx-box { background: #fbbf24; outline: 3px solid #fff; outline-offset: 1px; }
 
-  .ltx-box {
-    background: #ef4444;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .ltx-device.selected .ltx-box {
-    background: var(--gold);
-    outline: 3px solid #fff;
-    outline-offset: 1px;
-  }
-
-  /* ── Labels ── */
   .device-label {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.93);
-    border: 1px solid rgba(0,0,0,0.18);
-    color: #111;
-    font-family: var(--font);
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    white-space: nowrap;
-    pointer-events: none;
-    letter-spacing: 0.04em;
-    font-weight: 700;
+    position: absolute; left: 50%; transform: translateX(-50%);
+    background: rgba(255,255,255,0.93); border: 1px solid rgba(0,0,0,0.2);
+    color: #111; font-family: var(--font); font-size: 10px;
+    padding: 2px 6px; border-radius: 3px; white-space: nowrap;
+    pointer-events: none; letter-spacing: 0.04em; font-weight: 700;
   }
   .sensor-label-pos { top: calc(50% + var(--r) + 5px); }
   .ltx-label-pos    { top: calc(50% + var(--half) + 5px); }
-
   .sensor.selected .device-label,
-  .ltx-device.selected .device-label {
-    border-color: var(--gold);
-    color: #92400e;
-  }
+  .ltx-device.selected .device-label { border-color: #fbbf24; color: #92400e; }
 
-  /* ── Resize handles ── */
   .resize-handle {
-    position: absolute;
-    bottom: -4px; right: -4px;
-    width: 10px; height: 10px;
-    background: #fff;
-    border: 2px solid #22c55e;
-    border-radius: 50%;
-    cursor: se-resize;
-    opacity: 0;
-    transition: opacity 0.15s;
+    position: absolute; bottom: -4px; right: -4px;
+    width: 10px; height: 10px; background: #fff;
+    border: 2px solid #22c55e; border-radius: 50%;
+    cursor: se-resize; opacity: 0; transition: opacity 0.15s;
   }
-  .sensor:hover .resize-handle,
-  .sensor.selected .resize-handle { opacity: 1; }
-  .sensor.selected .resize-handle { border-color: var(--gold); }
+  .sensor:hover .resize-handle, .sensor.selected .resize-handle { opacity: 1; }
+  .sensor.selected .resize-handle { border-color: #fbbf24; }
 
   .ltx-resize-handle {
-    position: absolute;
-    bottom: -4px; right: -4px;
-    width: 10px; height: 10px;
-    background: #fff;
-    border: 2px solid #ef4444;
-    border-radius: 50%;
-    cursor: se-resize;
-    opacity: 0;
-    transition: opacity 0.15s;
+    position: absolute; bottom: -4px; right: -4px;
+    width: 10px; height: 10px; background: #fff;
+    border: 2px solid #ef4444; border-radius: 50%;
+    cursor: se-resize; opacity: 0; transition: opacity 0.15s;
   }
-  .ltx-device:hover .ltx-resize-handle,
-  .ltx-device.selected .ltx-resize-handle { opacity: 1; }
-  .ltx-device.selected .ltx-resize-handle { border-color: var(--gold); }
+  .ltx-device:hover .ltx-resize-handle, .ltx-device.selected .ltx-resize-handle { opacity: 1; }
+  .ltx-device.selected .ltx-resize-handle { border-color: #fbbf24; }
 
-  /* ── Sidebar ── */
+  /* Sidebar */
   #sidebar {
-    width: 230px;
-    background: var(--surface);
+    width: 230px; background: var(--surface);
     border-left: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    display: flex; flex-direction: column; overflow: hidden;
   }
   .sidebar-header {
-    padding: 10px 12px;
-    font-size: 9px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
+    padding: 10px 12px; font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border);
   }
   #device-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex: 1; overflow-y: auto; padding: 6px;
+    display: flex; flex-direction: column; gap: 4px;
   }
   #device-list::-webkit-scrollbar { width: 3px; }
   #device-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   .device-item {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 7px 9px;
-    cursor: pointer;
-    transition: border-color 0.15s;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 7px 9px; cursor: pointer;
+    transition: border-color 0.15s; display: flex; flex-direction: column; gap: 4px;
   }
   .device-item:hover { border-color: var(--muted); }
   .device-item.active { border-color: var(--gold); }
@@ -366,89 +229,59 @@
 
   .device-item-top { display: flex; align-items: center; justify-content: space-between; }
   .device-item-id  { font-size: 9px; color: var(--muted); letter-spacing: 0.08em; }
-
   .device-item-del {
-    background: none; border: none; color: var(--danger);
-    font-size: 14px; cursor: pointer; padding: 0 2px; line-height: 1;
-    opacity: 0.55; transition: opacity 0.15s; letter-spacing: 0;
-    text-transform: none; font-weight: 400;
+    background: none; border: none; color: var(--danger); font-size: 14px;
+    cursor: pointer; padding: 0 2px; line-height: 1; opacity: 0.55;
+    transition: opacity 0.15s; letter-spacing: 0; text-transform: none; font-weight: 400;
   }
   .device-item-del:hover { opacity: 1; background: none; }
 
   .device-name-input {
-    background: transparent; border: none;
-    border-bottom: 1px solid var(--border);
+    background: transparent; border: none; border-bottom: 1px solid var(--border);
     color: var(--text); font-family: var(--font); font-size: 11px;
     width: 100%; padding: 2px 0; outline: none; transition: border-color 0.15s;
   }
   .device-name-input:focus { border-bottom-color: var(--accent); }
 
-  .device-size-row {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 9px; color: var(--muted);
-  }
+  .device-size-row { display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--muted); }
   .device-size-row input[type=range] { flex: 1; accent-color: var(--accent); height: 3px; }
   .size-val { min-width: 26px; text-align: right; font-size: 9px; color: var(--muted); }
 
-  .sidebar-footer {
-    padding: 10px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .sidebar-footer { padding: 10px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
   .sidebar-footer button { width: 100%; }
 
-  .empty-state {
-    padding: 20px 12px; text-align: center;
-    color: var(--muted); font-size: 10px; line-height: 1.9; letter-spacing: 0.04em;
-  }
+  .empty-state { padding: 20px 12px; text-align: center; color: var(--muted); font-size: 10px; line-height: 1.9; }
 
   .line-item {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 6px 9px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 9px;
+    display: flex; align-items: center; justify-content: space-between; gap: 6px;
   }
   .line-item-label { font-size: 9px; color: var(--muted); flex: 1; }
   .line-dot { width: 20px; height: 3px; border-radius: 1px; flex-shrink: 0; }
   .line-dot.lora { background: repeating-linear-gradient(90deg,#4ade80 0,#4ade80 5px,transparent 5px,transparent 8px); }
   .line-dot.wire { background: repeating-linear-gradient(90deg,#ef4444 0,#ef4444 4px,transparent 4px,transparent 7px); }
-
-  .list-section {
-    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--muted); padding: 6px 4px 2px; opacity: 0.7;
-  }
+  .list-section { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 6px 4px 2px; opacity: 0.7; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">Silo<span>Mapper</span></div>
-
   <div class="addr-row">
-    <input id="addressInput" type="text" placeholder="Enter address or farm location..." autocomplete="off" />
+    <input id="addressInput" type="text" placeholder="Enter address or farm location..." autocomplete="off"/>
     <button class="btn-go" onclick="loadAddress()">Go</button>
   </div>
-
   <div class="toolbar-divider"></div>
   <button class="btn-lock" id="lockBtn" onclick="toggleLock()" disabled>Lock Map</button>
-
   <div class="toolbar-divider"></div>
   <button class="btn-sensor" id="addSensorBtn" onclick="addDevice('sensor')" disabled>+ Sensor</button>
   <button class="btn-ltx"    id="addLtxBtn"    onclick="addDevice('ltx')"    disabled>+ LTX</button>
-
   <div class="toolbar-divider"></div>
   <button class="btn-lora" id="loraBtn" onclick="toggleLineMode('lora')" disabled>LoRa Line</button>
   <button class="btn-wire" id="wireBtn" onclick="toggleLineMode('wire')" disabled>Wire Line</button>
-
   <div class="toolbar-divider"></div>
   <button class="btn-export" id="exportBtn" onclick="exportPNG()" disabled>Export PNG</button>
-
   <div class="toolbar-divider"></div>
   <button class="btn-clear" onclick="clearAll()">Clear All</button>
 </header>
@@ -465,22 +298,23 @@
       <div style="font-size:10px;margin-top:4px;">Enter an address and click Go</div>
     </div>
 
-    <!-- Static image used for export (crossorigin) -->
-    <img id="map-img" crossorigin="anonymous" alt="map" />
+    <!-- Layer 1: tile canvas — always visible once loaded -->
+    <canvas id="tile-canvas"></canvas>
 
-    <!-- Live iframe for panning/reference when unlocked -->
+    <!-- Layer 2: live Google Maps iframe — shown when unlocked -->
     <div id="map-iframe-wrap"></div>
 
+    <!-- Layer 3: SVG lines -->
     <svg id="line-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <!-- Layer 4: devices -->
     <div id="overlay"></div>
   </div>
 
   <div id="sidebar">
     <div class="sidebar-header">Devices &amp; Connections</div>
     <div id="device-list">
-      <div class="empty-state">
-        No devices placed.<br>Lock the map and use<br>+ Sensor or + LTX to begin.
-      </div>
+      <div class="empty-state">No devices placed.<br>Lock the map and use<br>+ Sensor or + LTX to begin.</div>
     </div>
     <div class="sidebar-footer">
       <button class="btn-sensor" id="sideAddSensor" onclick="addDevice('sensor')" disabled>+ Add Sensor</button>
@@ -490,23 +324,18 @@
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-// ── State ────────────────────────────────────────────────────────────────────
-let isLocked = false;
-let mapLoaded = false;
-let currentAddress = '';
-let devices = [];
-let lines = [];
-let selectedId = null;
-let deviceCounter = 0;
-let lineCounter = 0;
-let dragState = null;
-let resizeState = null;
-let lineMode = null;
-let lineFrom = null;
+// ── State ─────────────────────────────────────────────────────────────────────
+let isLocked = false, mapLoaded = false;
+let devices = [], lines = [];
+let selectedId = null, deviceCounter = 0, lineCounter = 0;
+let dragState = null, resizeState = null;
+let lineMode = null, lineFrom = null;
+let tileCanvas = document.getElementById('tile-canvas');
+let tileCtx = tileCanvas.getContext('2d');
+let tilesReady = false;
 
-// ── Element refs ─────────────────────────────────────────────────────────────
+// ── Refs ──────────────────────────────────────────────────────────────────────
 const overlay       = document.getElementById('overlay');
 const lineSvg       = document.getElementById('line-svg');
 const deviceList    = document.getElementById('device-list');
@@ -522,142 +351,81 @@ const sideAddLtx    = document.getElementById('sideAddLtx');
 const mapContainer  = document.getElementById('map-container');
 const placeholder   = document.getElementById('placeholder');
 const iframeWrap    = document.getElementById('map-iframe-wrap');
-const mapImg        = document.getElementById('map-img');
 
-const GMAP_KEY = '';  // ← paste your Google Maps Static API key here for best results
-                       //   Without a key it still works via the embed proxy below
-
-// ── Status ───────────────────────────────────────────────────────────────────
+// ── Status ────────────────────────────────────────────────────────────────────
 function setStatus(msg, type) {
-  statusBar.innerHTML = '';
-  const span = document.createElement('span');
-  span.textContent = msg;
-  if (type) span.className = type + '-msg';
-  statusBar.appendChild(span);
+  statusBar.innerHTML = `<span class="${type||''}-msg">${msg}</span>`;
 }
 
-// ── Load address ─────────────────────────────────────────────────────────────
-function loadAddress() {
-  const addr = document.getElementById('addressInput').value.trim();
-  if (!addr) return;
-  currentAddress = addr;
-
-  // Show live iframe for browsing
-  iframeWrap.innerHTML = '';
-  iframeWrap.style.cssText = 'position:absolute;inset:0;z-index:2;';
-  const iframe = document.createElement('iframe');
-  iframe.id = 'map-iframe';
-  iframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(addr)}&t=k&z=18&output=embed&iwloc=near`;
-  iframe.setAttribute('allowfullscreen', '');
-  iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-  iframe.style.cssText = 'width:100%;height:100%;border:none;filter:brightness(1.4) saturate(0.65);';
-  iframeWrap.appendChild(iframe);
-
-  // Load static map image for export (uses OpenStreetMap tile proxy — no key needed)
-  loadStaticMap(addr);
-
-  placeholder.style.display = 'none';
-  mapContainer.classList.remove('locked-view');
-  mapLoaded = true;
-  lockBtn.disabled = false;
-  exportBtn.disabled = false;
-  setStatus(`Loaded: "${addr}" — Click "Lock Map" to freeze view and place devices.`, 'ok');
-  if (isLocked) unlock();
-}
-
-document.getElementById('addressInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') loadAddress();
-});
-
-// Build a static satellite image URL we can actually render cross-origin
-function loadStaticMap(addr) {
+// ── Tile map loader ───────────────────────────────────────────────────────────
+// Geocodes the address via Nominatim, then draws ArcGIS satellite tiles
+// onto the persistent canvas (layer 1). The iframe (layer 2) sits on top
+// while unlocked. When locked the iframe hides, revealing the tile canvas.
+function loadTiles(lat, lon) {
   const rect = mapContainer.getBoundingClientRect();
-  const w = Math.round(rect.width)  || 1200;
-  const h = Math.round(rect.height) || 800;
+  const W = rect.width  || 1100;
+  const H = rect.height || 700;
+  tileCanvas.width  = W;
+  tileCanvas.height = H;
+  tileCanvas.style.display = 'block';
 
-  let src;
-  if (GMAP_KEY) {
-    // Google Maps Static API (best quality, requires API key)
-    src = `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(addr)}&zoom=18&size=${w}x${h}&maptype=satellite&key=${GMAP_KEY}`;
-  } else {
-    // Fallback: use a geocoding + tile approach via open APIs
-    // We'll geocode with nominatim then build an OSM static image
-    geocodeAndLoadTile(addr, w, h);
-    return;
-  }
-  mapImg.src = src;
-}
-
-function geocodeAndLoadTile(addr, w, h) {
-  // Geocode address using Nominatim
-  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1`, {
-    headers: { 'Accept-Language': 'en' }
-  })
-  .then(r => r.json())
-  .then(data => {
-    if (!data || !data[0]) return;
-    const lat = parseFloat(data[0].lat);
-    const lon = parseFloat(data[0].lon);
-    // Use staticmap service (free, no key)
-    const src = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=17&size=${Math.min(w,1024)}x${Math.min(h,1024)}&maptype=satellite`;
-    // Try a CORS-friendly tile source
-    buildCanvasTileMap(lat, lon, w, h);
-  })
-  .catch(() => {
-    // Silently fail — export will show grey bg
-  });
-}
-
-// Draw OSM tiles onto an offscreen canvas, then put into mapImg as data URL
-function buildCanvasTileMap(lat, lon, containerW, containerH) {
   const zoom = 18;
-  const tileSize = 256;
+  const TILE = 256;
 
-  function latLonToTile(lat, lon, z) {
+  function latLonToTileXY(lat, lon, z) {
     const n = Math.pow(2, z);
-    const x = Math.floor((lon + 180) / 360 * n);
-    const latRad = lat * Math.PI / 180;
-    const y = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+    const x = (lon + 180) / 360 * n;
+    const latR = lat * Math.PI / 180;
+    const y = (1 - Math.log(Math.tan(latR) + 1/Math.cos(latR)) / Math.PI) / 2 * n;
     return { x, y };
   }
 
-  const center = latLonToTile(lat, lon, zoom);
-  const tilesX = Math.ceil(containerW / tileSize) + 2;
-  const tilesY = Math.ceil(containerH / tileSize) + 2;
+  const exact   = latLonToTileXY(lat, lon, zoom);
+  const centerX = Math.floor(exact.x);
+  const centerY = Math.floor(exact.y);
 
-  const canvas = document.createElement('canvas');
-  canvas.width  = containerW;
-  canvas.height = containerH;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#c8cdd8';
-  ctx.fillRect(0, 0, containerW, containerH);
+  // Pixel offset of the center address within the center tile
+  const fracX = exact.x - centerX;
+  const fracY = exact.y - centerY;
 
-  const offsetX = Math.floor(tilesX / 2);
-  const offsetY = Math.floor(tilesY / 2);
-  let loaded = 0;
-  const total = tilesX * tilesY;
+  // How many tiles do we need in each direction?
+  const halfW = Math.ceil(W / 2 / TILE) + 1;
+  const halfH = Math.ceil(H / 2 / TILE) + 1;
 
-  for (let dx = -offsetX; dx < tilesX - offsetX; dx++) {
-    for (let dy = -offsetY; dy < tilesY - offsetY; dy++) {
-      const tx = center.x + dx;
-      const ty = center.y + dy;
-      const px = (dx + offsetX) * tileSize - (tileSize - containerW % tileSize) / 2;
-      const py = (dy + offsetY) * tileSize - (tileSize - containerH % tileSize) / 2;
+  // Canvas origin (where tile centerX,centerY top-left lands)
+  const originX = W / 2 - fracX * TILE;
+  const originY = H / 2 - fracY * TILE;
 
+  tileCtx.fillStyle = '#3a4052';
+  tileCtx.fillRect(0, 0, W, H);
+
+  let total = 0, loaded = 0;
+
+  for (let dx = -halfW; dx <= halfW; dx++) {
+    for (let dy = -halfH; dy <= halfH; dy++) {
+      const tx = centerX + dx;
+      const ty = centerY + dy;
+      const px = Math.round(originX + dx * TILE);
+      const py = Math.round(originY + dy * TILE);
+
+      // Skip tiles that are entirely outside the canvas
+      if (px + TILE < 0 || px > W || py + TILE < 0 || py > H) continue;
+
+      total++;
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      // Use ArcGIS satellite tiles (free, supports crossOrigin)
+      // ArcGIS World Imagery — free, CORS-enabled, high quality satellite
       img.src = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${ty}/${tx}`;
+
       img.onload = () => {
-        ctx.drawImage(img, px, py, tileSize, tileSize);
+        tileCtx.drawImage(img, px, py, TILE, TILE);
         loaded++;
         if (loaded === total) {
-          // Apply brightness filter to match iframe appearance
-          ctx.globalCompositeOperation = 'source-atop';
-          ctx.fillStyle = 'rgba(255,255,255,0.3)';
-          ctx.fillRect(0, 0, containerW, containerH);
-          ctx.globalCompositeOperation = 'source-over';
-          mapImg.src = canvas.toDataURL('image/jpeg', 0.9);
+          // Lighten slightly to match the iframe filter appearance
+          tileCtx.fillStyle = 'rgba(255,255,255,0.22)';
+          tileCtx.fillRect(0, 0, W, H);
+          tilesReady = true;
+          setStatus(`Map ready — tiles loaded. Click "Lock Map" to place devices.`, 'ok');
         }
       };
       img.onerror = () => { loaded++; };
@@ -665,31 +433,74 @@ function buildCanvasTileMap(lat, lon, containerW, containerH) {
   }
 }
 
-// ── Lock / Unlock ─────────────────────────────────────────────────────────────
-function toggleLock() {
-  if (!mapLoaded) return;
-  isLocked ? unlock() : lock();
+// ── Load address ──────────────────────────────────────────────────────────────
+function loadAddress() {
+  const addr = document.getElementById('addressInput').value.trim();
+  if (!addr) return;
+
+  placeholder.style.display = 'none';
+  tilesReady = false;
+  setStatus('Geocoding address and loading satellite tiles…', 'ok');
+
+  // 1. Start the live Google Maps iframe immediately
+  iframeWrap.innerHTML = '';
+  iframeWrap.style.cssText = 'position:absolute;inset:0;z-index:2;display:block;';
+  const iframe = document.createElement('iframe');
+  iframe.id  = 'map-iframe';
+  iframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(addr)}&t=k&z=18&output=embed&iwloc=near`;
+  iframe.setAttribute('allowfullscreen','');
+  iframe.setAttribute('referrerpolicy','no-referrer-when-downgrade');
+  iframe.style.cssText = 'width:100%;height:100%;border:none;filter:brightness(1.35) saturate(0.7);';
+  iframeWrap.appendChild(iframe);
+
+  // 2. Geocode and load tiles in parallel
+  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1`, {
+    headers: { 'Accept-Language': 'en', 'User-Agent': 'SiloMapper/1.0' }
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (!data || !data[0]) {
+      setStatus('Could not geocode address — tiles unavailable, but iframe is live.', 'warn');
+      return;
+    }
+    loadTiles(parseFloat(data[0].lat), parseFloat(data[0].lon));
+  })
+  .catch(() => {
+    setStatus('Tile load failed — iframe still live. Lock will show grey background.', 'warn');
+  });
+
+  mapLoaded = true;
+  lockBtn.disabled = false;
+  exportBtn.disabled = false;
+  if (isLocked) unlock();
 }
+
+document.getElementById('addressInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') loadAddress();
+});
+
+// ── Lock / Unlock ─────────────────────────────────────────────────────────────
+function toggleLock() { isLocked ? unlock() : lock(); }
 
 function lock() {
   isLocked = true;
   lockBtn.textContent = 'Unlock Map';
   lockBtn.classList.add('locked');
-  // Switch to static image view (which html2canvas can capture)
-  mapContainer.classList.add('locked-view');
+  // Hide iframe, show tile canvas beneath devices
+  iframeWrap.style.display = 'none';
+  tileCanvas.style.display = 'block';
   overlay.classList.add('interactive');
   [addSensorBtn, addLtxBtn, loraBtn, wireBtn, sideAddSensor, sideAddLtx].forEach(b => b.disabled = false);
-  setStatus('Map locked — place Sensors and LTX units, then draw connection lines.', 'locked');
+  setStatus('Map locked — place Sensors and LTX units, draw connection lines.', 'locked');
 }
 
 function unlock() {
   isLocked = false;
   lineMode = null; lineFrom = null;
-  loraBtn.classList.remove('active');
-  wireBtn.classList.remove('active');
-  lockBtn.textContent = 'Lock Map';
-  lockBtn.classList.remove('locked');
-  mapContainer.classList.remove('locked-view');
+  loraBtn.classList.remove('active'); wireBtn.classList.remove('active');
+  lockBtn.textContent = 'Lock Map'; lockBtn.classList.remove('locked');
+  // Restore iframe on top, keep tile canvas behind
+  iframeWrap.style.display = 'block';
   overlay.classList.remove('interactive', 'line-mode');
   [addSensorBtn, addLtxBtn, loraBtn, wireBtn, sideAddSensor, sideAddLtx].forEach(b => b.disabled = true);
   setStatus('Map unlocked — scroll and zoom freely. Lock again to adjust devices.');
@@ -709,15 +520,13 @@ function addDevice(type) {
   });
   renderDevices();
   selectDevice(deviceCounter);
-  setStatus(`"${devices[devices.length-1].name}" added — drag to position, resize with corner handle.`, 'ok');
+  setStatus(`"${devices[devices.length-1].name}" added — drag to position.`, 'ok');
 }
 
 // ── Select ────────────────────────────────────────────────────────────────────
 function selectDevice(id) {
   if (lineMode) { handleLineClick(id); return; }
-  selectedId = id;
-  renderDevices();
-  renderSidebar();
+  selectedId = id; renderDevices(); renderSidebar();
 }
 
 // ── Delete ────────────────────────────────────────────────────────────────────
@@ -727,11 +536,7 @@ function deleteDevice(id) {
   if (selectedId === id) selectedId = null;
   renderDevices(); renderLines(); renderSidebar();
 }
-
-function deleteLine(id) {
-  lines = lines.filter(l => l.id !== id);
-  renderLines(); renderSidebar();
-}
+function deleteLine(id) { lines = lines.filter(l => l.id !== id); renderLines(); renderSidebar(); }
 
 function clearDevices() {
   devices = []; lines = []; selectedId = null;
@@ -743,11 +548,11 @@ function clearDevices() {
 
 function clearAll() {
   clearDevices();
-  iframeWrap.innerHTML = '';
-  mapImg.src = '';
-  mapImg.style.display = 'none';
+  iframeWrap.innerHTML = ''; iframeWrap.style.display = 'none';
+  tileCanvas.style.display = 'none';
+  tileCtx.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
+  tilesReady = false;
   placeholder.style.display = 'flex';
-  mapContainer.classList.remove('locked-view');
   mapLoaded = false; isLocked = false; deviceCounter = 0; lineCounter = 0;
   lockBtn.textContent = 'Lock Map'; lockBtn.classList.remove('locked'); lockBtn.disabled = true;
   exportBtn.disabled = true;
@@ -763,14 +568,13 @@ function toggleLineMode(type) {
     lineMode = null; lineFrom = null;
     loraBtn.classList.remove('active'); wireBtn.classList.remove('active');
     overlay.classList.remove('line-mode');
-    setStatus('Line mode cancelled.', 'ok');
-    return;
+    setStatus('Line mode cancelled.', 'ok'); return;
   }
   lineMode = type; lineFrom = null;
   loraBtn.classList.toggle('active', type === 'lora');
   wireBtn.classList.toggle('active', type === 'wire');
   overlay.classList.add('line-mode');
-  setStatus(`${type === 'lora' ? 'LoRa (green dotted)' : 'Wire (red dotted)'} — click start device, then end device.`, 'warn');
+  setStatus(`${type==='lora'?'LoRa (green dotted)':'Wire (red dotted)'} — click start device, then end device.`, 'warn');
 }
 
 function handleLineClick(id) {
@@ -780,8 +584,9 @@ function handleLineClick(id) {
     return;
   }
   if (lineFrom === id) { setStatus('Cannot connect a device to itself.', 'warn'); return; }
-  const dup = lines.find(l => (l.fromId===lineFrom&&l.toId===id)||(l.fromId===id&&l.toId===lineFrom));
-  if (dup) { setStatus('Line already exists between these two devices.', 'warn'); lineFrom = null; return; }
+  if (lines.find(l=>(l.fromId===lineFrom&&l.toId===id)||(l.fromId===id&&l.toId===lineFrom))) {
+    setStatus('Line already exists between these devices.', 'warn'); lineFrom = null; return;
+  }
   lineCounter++;
   const f = devices.find(d=>d.id===lineFrom);
   const t = devices.find(d=>d.id===id);
@@ -797,16 +602,14 @@ function renderLines() {
   lines.forEach(l => {
     const f = devices.find(d=>d.id===l.fromId);
     const t = devices.find(d=>d.id===l.toId);
-    if (!f || !t) return;
-    const color = l.lineType === 'lora' ? '#4ade80' : '#ef4444';
-    const dash  = l.lineType === 'lora' ? '9,6' : '5,4';
-    const line  = document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1', f.x); line.setAttribute('y1', f.y);
-    line.setAttribute('x2', t.x); line.setAttribute('y2', t.y);
-    line.setAttribute('stroke', color);
-    line.setAttribute('stroke-width', l.lineType==='lora' ? 2.5 : 2);
-    line.setAttribute('stroke-dasharray', dash);
-    line.setAttribute('stroke-linecap', 'round');
+    if (!f||!t) return;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',f.x); line.setAttribute('y1',f.y);
+    line.setAttribute('x2',t.x); line.setAttribute('y2',t.y);
+    line.setAttribute('stroke', l.lineType==='lora'?'#4ade80':'#ef4444');
+    line.setAttribute('stroke-width', l.lineType==='lora'?2.5:2);
+    line.setAttribute('stroke-dasharray', l.lineType==='lora'?'9,6':'5,4');
+    line.setAttribute('stroke-linecap','round');
     lineSvg.appendChild(line);
   });
 }
@@ -814,72 +617,60 @@ function renderLines() {
 // ── Render devices ────────────────────────────────────────────────────────────
 function renderDevices() {
   overlay.innerHTML = '';
-  devices.forEach(d => d.type === 'sensor' ? renderSensor(d) : renderLTX(d));
+  devices.forEach(d => d.type==='sensor' ? renderSensor(d) : renderLTX(d));
+}
+
+function makeDeviceEl(d, className) {
+  const el = document.createElement('div');
+  el.className = className + (d.id===selectedId?' selected':'');
+  if (lineMode) el.style.cursor = 'crosshair';
+  el.dataset.id = d.id;
+  el.style.left = d.x+'px'; el.style.top = d.y+'px';
+  el.addEventListener('mousedown', startDrag);
+  el.addEventListener('click', () => { if (!dragState) selectDevice(d.id); });
+  return el;
 }
 
 function renderSensor(d) {
-  const el = document.createElement('div');
-  el.className = 'sensor' + (d.id === selectedId ? ' selected' : '');
-  if (lineMode) el.style.cursor = 'crosshair';
-  el.dataset.id = d.id;
-  el.style.left = d.x + 'px'; el.style.top = d.y + 'px';
-  el.style.setProperty('--r', d.r + 'px');
-
+  const el = makeDeviceEl(d, 'sensor');
+  el.style.setProperty('--r', d.r+'px');
   const ring = document.createElement('div');
   ring.className = 'sensor-ring';
-  ring.style.width = ring.style.height = (d.r * 2) + 'px';
-
+  ring.style.width = ring.style.height = (d.r*2)+'px';
   const label = document.createElement('div');
   label.className = 'device-label sensor-label-pos';
   label.textContent = d.name;
-
   const handle = document.createElement('div');
-  handle.className = 'resize-handle';
-  handle.dataset.resize = d.id;
-
-  el.appendChild(ring); el.appendChild(label); el.appendChild(handle);
-  el.addEventListener('mousedown', startDrag);
+  handle.className = 'resize-handle'; handle.dataset.resize = d.id;
   handle.addEventListener('mousedown', startResize);
-  el.addEventListener('click', () => { if (!dragState) selectDevice(d.id); });
+  el.appendChild(ring); el.appendChild(label); el.appendChild(handle);
   overlay.appendChild(el);
 }
 
 function renderLTX(d) {
-  const el = document.createElement('div');
-  el.className = 'ltx-device' + (d.id === selectedId ? ' selected' : '');
-  if (lineMode) el.style.cursor = 'crosshair';
-  el.dataset.id = d.id;
-  el.style.left = d.x + 'px'; el.style.top = d.y + 'px';
-  el.style.setProperty('--half', d.r + 'px');
-
+  const el = makeDeviceEl(d, 'ltx-device');
+  el.style.setProperty('--half', d.r+'px');
   const box = document.createElement('div');
   box.className = 'ltx-box';
-  box.style.width = box.style.height = (d.r * 2) + 'px';
-
+  box.style.width = box.style.height = (d.r*2)+'px';
   const label = document.createElement('div');
   label.className = 'device-label ltx-label-pos';
   label.textContent = d.name;
-
   const handle = document.createElement('div');
-  handle.className = 'ltx-resize-handle';
-  handle.dataset.resize = d.id;
-
-  el.appendChild(box); el.appendChild(label); el.appendChild(handle);
-  el.addEventListener('mousedown', startDrag);
+  handle.className = 'ltx-resize-handle'; handle.dataset.resize = d.id;
   handle.addEventListener('mousedown', startResize);
-  el.addEventListener('click', () => { if (!dragState) selectDevice(d.id); });
+  el.appendChild(box); el.appendChild(label); el.appendChild(handle);
   overlay.appendChild(el);
 }
 
 // ── Drag & Resize ─────────────────────────────────────────────────────────────
 function startDrag(e) {
-  if (e.target.dataset.resize) return;
-  if (!isLocked) return;
+  if (e.target.dataset.resize || !isLocked) return;
   e.preventDefault();
   const id = parseInt(e.currentTarget.dataset.id);
   if (!lineMode) selectDevice(id);
   const dev = devices.find(d=>d.id===id);
-  dragState = { id, startX: e.clientX - dev.x, startY: e.clientY - dev.y };
+  dragState = { id, startX: e.clientX-dev.x, startY: e.clientY-dev.y };
 }
 
 function startResize(e) {
@@ -889,198 +680,184 @@ function startResize(e) {
   selectDevice(id);
   const dev = devices.find(d=>d.id===id);
   const rect = overlay.getBoundingClientRect();
-  resizeState = { id, cx: rect.left + dev.x, cy: rect.top + dev.y };
+  resizeState = { id, cx: rect.left+dev.x, cy: rect.top+dev.y };
 }
 
 document.addEventListener('mousemove', e => {
   if (dragState) {
-    const dev = devices.find(d=>d.id===dragState.id);
-    if (!dev) return;
+    const dev = devices.find(d=>d.id===dragState.id); if (!dev) return;
     const rect = overlay.getBoundingClientRect();
-    dev.x = Math.max(0, Math.min(rect.width,  e.clientX - dragState.startX));
-    dev.y = Math.max(0, Math.min(rect.height, e.clientY - dragState.startY));
+    dev.x = Math.max(0, Math.min(rect.width,  e.clientX-dragState.startX));
+    dev.y = Math.max(0, Math.min(rect.height, e.clientY-dragState.startY));
     renderDevices(); renderLines();
   }
   if (resizeState) {
-    const dev = devices.find(d=>d.id===resizeState.id);
-    if (!dev) return;
-    const dx = e.clientX - resizeState.cx;
-    const dy = e.clientY - resizeState.cy;
+    const dev = devices.find(d=>d.id===resizeState.id); if (!dev) return;
+    const dx = e.clientX-resizeState.cx, dy = e.clientY-resizeState.cy;
     dev.r = Math.max(12, Math.min(160, Math.sqrt(dx*dx+dy*dy)));
     renderDevices();
-    const slider = document.querySelector(`.size-slider[data-id="${dev.id}"]`);
-    const val    = document.querySelector(`.size-val[data-id="${dev.id}"]`);
-    if (slider) slider.value = Math.round(dev.r);
-    if (val) val.textContent = Math.round(dev.r) + 'px';
+    const sl = document.querySelector(`.size-slider[data-id="${dev.id}"]`);
+    const vl = document.querySelector(`.size-val[data-id="${dev.id}"]`);
+    if (sl) sl.value = Math.round(dev.r);
+    if (vl) vl.textContent = Math.round(dev.r)+'px';
   }
 });
-
-document.addEventListener('mouseup', () => { dragState = null; resizeState = null; });
+document.addEventListener('mouseup', () => { dragState=null; resizeState=null; });
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 function renderSidebar() {
   deviceList.innerHTML = '';
-  if (devices.length === 0 && lines.length === 0) {
-    const e = document.createElement('div');
-    e.className = 'empty-state';
-    e.innerHTML = 'No devices placed.<br>Lock the map and use<br>+ Sensor or + LTX to begin.';
-    deviceList.appendChild(e); return;
+  if (!devices.length && !lines.length) {
+    deviceList.innerHTML = '<div class="empty-state">No devices placed.<br>Lock the map and use<br>+ Sensor or + LTX to begin.</div>';
+    return;
   }
-
-  if (devices.length > 0) {
-    addSectionLabel('Devices');
+  if (devices.length) {
+    addSection('Devices');
     devices.forEach(d => {
       const item = document.createElement('div');
-      item.className = `device-item ${d.type}-type` + (d.id===selectedId?' active':'');
+      item.className = `device-item ${d.type}-type`+(d.id===selectedId?' active':'');
       item.onclick = () => { if (!lineMode) selectDevice(d.id); };
 
-      const top = document.createElement('div'); top.className = 'device-item-top';
-      const idLbl = document.createElement('div'); idLbl.className = 'device-item-id';
+      const top = document.createElement('div'); top.className='device-item-top';
+      const idLbl = document.createElement('div'); idLbl.className='device-item-id';
       idLbl.textContent = `${d.type.toUpperCase()} #${String(d.id).padStart(2,'0')}`;
-      const del = document.createElement('button'); del.className = 'device-item-del'; del.textContent = '×';
+      const del = document.createElement('button'); del.className='device-item-del'; del.textContent='×';
       del.onclick = e => { e.stopPropagation(); deleteDevice(d.id); };
       top.appendChild(idLbl); top.appendChild(del);
 
       const nameIn = document.createElement('input');
-      nameIn.type = 'text'; nameIn.className = 'device-name-input'; nameIn.value = d.name;
-      nameIn.placeholder = 'Device name...'; nameIn.onclick = e => e.stopPropagation();
-      nameIn.oninput = e => { d.name = e.target.value; renderDevices(); };
+      nameIn.type='text'; nameIn.className='device-name-input'; nameIn.value=d.name;
+      nameIn.onclick = e => e.stopPropagation();
+      nameIn.oninput = e => { d.name=e.target.value; renderDevices(); };
 
-      const sizeRow = document.createElement('div'); sizeRow.className = 'device-size-row';
-      sizeRow.innerHTML = '<span>Size</span>';
+      const sizeRow = document.createElement('div'); sizeRow.className='device-size-row';
+      sizeRow.innerHTML='<span>Size</span>';
       const slider = document.createElement('input');
       slider.type='range'; slider.min=12; slider.max=160; slider.step=1;
       slider.value=Math.round(d.r); slider.className='size-slider'; slider.dataset.id=d.id;
       slider.onclick = e => e.stopPropagation();
-      const sizeVal = document.createElement('span');
-      sizeVal.className='size-val'; sizeVal.dataset.id=d.id; sizeVal.textContent=Math.round(d.r)+'px';
-      slider.oninput = e => { d.r=parseInt(e.target.value); sizeVal.textContent=d.r+'px'; renderDevices(); renderLines(); };
-      sizeRow.appendChild(slider); sizeRow.appendChild(sizeVal);
+      const sv = document.createElement('span'); sv.className='size-val'; sv.dataset.id=d.id;
+      sv.textContent=Math.round(d.r)+'px';
+      slider.oninput = e => { d.r=parseInt(e.target.value); sv.textContent=d.r+'px'; renderDevices(); renderLines(); };
+      sizeRow.appendChild(slider); sizeRow.appendChild(sv);
 
       item.appendChild(top); item.appendChild(nameIn); item.appendChild(sizeRow);
       deviceList.appendChild(item);
     });
   }
-
-  if (lines.length > 0) {
-    addSectionLabel('Connections');
+  if (lines.length) {
+    addSection('Connections');
     lines.forEach(l => {
-      const f = devices.find(d=>d.id===l.fromId);
-      const t = devices.find(d=>d.id===l.toId);
+      const f=devices.find(d=>d.id===l.fromId), t=devices.find(d=>d.id===l.toId);
       if (!f||!t) return;
-      const item = document.createElement('div'); item.className = 'line-item';
-      const dot = document.createElement('div'); dot.className = `line-dot ${l.lineType}`;
-      const lbl = document.createElement('div'); lbl.className = 'line-item-label';
-      lbl.textContent = `${f.name} → ${t.name}`;
-      const del = document.createElement('button'); del.className = 'device-item-del'; del.textContent = '×';
-      del.onclick = () => deleteLine(l.id);
+      const item=document.createElement('div'); item.className='line-item';
+      const dot=document.createElement('div'); dot.className=`line-dot ${l.lineType}`;
+      const lbl=document.createElement('div'); lbl.className='line-item-label';
+      lbl.textContent=`${f.name} → ${t.name}`;
+      const del=document.createElement('button'); del.className='device-item-del'; del.textContent='×';
+      del.onclick=()=>deleteLine(l.id);
       item.appendChild(dot); item.appendChild(lbl); item.appendChild(del);
       deviceList.appendChild(item);
     });
   }
 }
 
-function addSectionLabel(text) {
-  const s = document.createElement('div'); s.className = 'list-section'; s.textContent = text;
+function addSection(txt) {
+  const s=document.createElement('div'); s.className='list-section'; s.textContent=txt;
   deviceList.appendChild(s);
 }
 
 // ── Export PNG ────────────────────────────────────────────────────────────────
+// Composites: tile canvas → SVG lines → devices+labels, all drawn natively
 function exportPNG() {
-  if (!isLocked) {
-    setStatus('Lock the map first, then export.', 'warn');
-    return;
-  }
-  setStatus('Generating PNG…', 'ok');
+  if (!isLocked) { setStatus('Lock the map first, then export.','warn'); return; }
+  setStatus('Generating PNG…','ok');
 
-  // Temporarily hide the sidebar UI chrome for a clean export
-  const rect   = mapContainer.getBoundingClientRect();
-  const canvas = document.createElement('canvas');
-  const scale  = 2;
-  canvas.width  = rect.width  * scale;
-  canvas.height = rect.height * scale;
-  const ctx = canvas.getContext('2d');
+  const rect = mapContainer.getBoundingClientRect();
+  const scale = 2;
+  const out = document.createElement('canvas');
+  out.width  = rect.width  * scale;
+  out.height = rect.height * scale;
+  const ctx = out.getContext('2d');
   ctx.scale(scale, scale);
 
-  // 1. Draw static map image if loaded
-  const drawMap = new Promise(resolve => {
-    if (mapImg.src && mapImg.complete && mapImg.naturalWidth > 0) {
-      ctx.drawImage(mapImg, 0, 0, rect.width, rect.height);
-      resolve();
+  // 1 — Map tile background
+  if (tilesReady && tileCanvas.width > 0) {
+    ctx.drawImage(tileCanvas, 0, 0, rect.width, rect.height);
+  } else {
+    ctx.fillStyle = '#3a4a5a';
+    ctx.fillRect(0, 0, rect.width, rect.height);
+  }
+
+  // 2 — Draw lines directly (skip SVG serialization, draw natively)
+  lines.forEach(l => {
+    const f=devices.find(d=>d.id===l.fromId), t=devices.find(d=>d.id===l.toId);
+    if (!f||!t) return;
+    ctx.save();
+    ctx.strokeStyle = l.lineType==='lora' ? '#4ade80' : '#ef4444';
+    ctx.lineWidth   = l.lineType==='lora' ? 2.5 : 2;
+    ctx.setLineDash( l.lineType==='lora' ? [9,6] : [5,4] );
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(f.x, f.y); ctx.lineTo(t.x, t.y);
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // 3 — Draw devices
+  devices.forEach(d => {
+    const isSel = d.id === selectedId;
+    ctx.save();
+    if (d.type === 'sensor') {
+      ctx.fillStyle = isSel ? '#fbbf24' : '#22c55e';
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+      ctx.fill();
+      if (isSel) { ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.stroke(); }
     } else {
-      ctx.fillStyle = '#c8d0de';
-      ctx.fillRect(0, 0, rect.width, rect.height);
-      resolve();
+      ctx.fillStyle = isSel ? '#fbbf24' : '#ef4444';
+      ctx.fillRect(d.x-d.r, d.y-d.r, d.r*2, d.r*2);
+      if (isSel) { ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.strokeRect(d.x-d.r, d.y-d.r, d.r*2, d.r*2); }
     }
+    ctx.restore();
+
+    // Label
+    const labelY = d.y + d.r + 14;
+    ctx.font = 'bold 11px monospace';
+    const tw = ctx.measureText(d.name).width;
+    const pad = 5;
+    const lx = d.x - tw/2 - pad;
+    const ly = ly2 = labelY - 9;
+    const lw = tw + pad*2, lh = 16;
+
+    // Label background
+    ctx.save();
+    ctx.fillStyle = 'rgba(255,255,255,0.93)';
+    ctx.strokeStyle = isSel ? '#fbbf24' : 'rgba(0,0,0,0.18)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, lx, ly, lw, lh, 3);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = isSel ? '#92400e' : '#111';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(d.name, d.x, labelY - 1);
+    ctx.restore();
   });
 
-  drawMap.then(() => {
-    // 2. Draw SVG lines
-    const svgStr = new XMLSerializer().serializeToString(lineSvg);
-    const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
-    const svgUrl  = URL.createObjectURL(svgBlob);
-    const svgImg  = new Image();
-    svgImg.onload = () => {
-      ctx.drawImage(svgImg, 0, 0, rect.width, rect.height);
-      URL.revokeObjectURL(svgUrl);
-
-      // 3. Draw devices (circles and squares)
-      devices.forEach(d => {
-        if (d.type === 'sensor') {
-          ctx.beginPath();
-          ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-          ctx.fillStyle = d.id === selectedId ? '#fbbf24' : '#22c55e';
-          ctx.fill();
-          // Label
-          drawLabel(ctx, d.name, d.x, d.y + d.r + 13, d.id === selectedId);
-        } else {
-          ctx.fillStyle = d.id === selectedId ? '#fbbf24' : '#ef4444';
-          ctx.fillRect(d.x - d.r, d.y - d.r, d.r * 2, d.r * 2);
-          // Label
-          drawLabel(ctx, d.name, d.x, d.y + d.r + 13, d.id === selectedId);
-        }
-      });
-
-      // 4. Download
-      const link = document.createElement('a');
-      link.download = 'silo-map.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      setStatus('PNG exported successfully.', 'ok');
-    };
-    svgImg.onerror = () => {
-      // Fallback: export without lines
-      URL.revokeObjectURL(svgUrl);
-      finishCanvasExport(ctx, rect, canvas);
-    };
-    svgImg.src = svgUrl;
-  });
-}
-
-function drawLabel(ctx, text, x, y, selected) {
-  ctx.font = 'bold 11px monospace';
-  const tw = ctx.measureText(text).width;
-  const pad = 5;
-  // Background pill
-  ctx.fillStyle = selected ? 'rgba(255,251,235,0.95)' : 'rgba(255,255,255,0.93)';
-  ctx.strokeStyle = selected ? '#fbbf24' : 'rgba(0,0,0,0.18)';
-  ctx.lineWidth = 1;
-  roundRect(ctx, x - tw/2 - pad, y - 10, tw + pad*2, 16, 3);
-  ctx.fill(); ctx.stroke();
-  // Text
-  ctx.fillStyle = selected ? '#92400e' : '#111';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(text, x, y - 2);
+  // 4 — Download
+  const link = document.createElement('a');
+  link.download = 'silo-map.png';
+  link.href = out.toDataURL('image/png');
+  link.click();
+  setStatus('PNG downloaded successfully.','ok');
 }
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
-  ctx.moveTo(x+r, y);
-  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r);
-  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
-  ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r);
-  ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r);
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
   ctx.closePath();
 }
 
