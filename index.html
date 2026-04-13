@@ -45,7 +45,6 @@
 
   .logo { font-size:12px; font-weight:700; letter-spacing:0.12em; color:var(--accent); white-space:nowrap; text-transform:uppercase; }
   .logo span { color:var(--muted); font-weight:400; }
-
   .addr-row { display:flex; gap:6px; flex:1; min-width:220px; }
 
   #addressInput {
@@ -64,24 +63,24 @@
     border-radius:4px; padding:6px 11px; border:1px solid;
     transition:all 0.15s; white-space:nowrap;
   }
-  .btn-go    { background:var(--accent);  color:#0f1117; border-color:var(--accent); }
+  .btn-go     { background:var(--accent);  color:#0f1117; border-color:var(--accent); }
   .btn-go:hover { background:var(--accent2); border-color:var(--accent2); }
-  .btn-lock  { background:transparent; color:var(--gold);   border-color:var(--gold); }
+  .btn-lock   { background:transparent; color:var(--gold); border-color:var(--gold); }
   .btn-lock:hover { background:rgba(251,191,36,0.1); }
   .btn-lock.locked { background:var(--gold); color:#0f1117; }
-  .btn-sensor{ background:transparent; color:var(--accent);  border-color:var(--accent); }
+  .btn-sensor { background:transparent; color:var(--accent); border-color:var(--accent); }
   .btn-sensor:hover { background:rgba(74,222,128,0.08); }
-  .btn-ltx   { background:transparent; color:#ef4444; border-color:#ef4444; }
+  .btn-ltx    { background:transparent; color:#ef4444; border-color:#ef4444; }
   .btn-ltx:hover { background:rgba(239,68,68,0.08); }
-  .btn-lora  { background:transparent; color:var(--accent);  border-color:var(--accent); }
+  .btn-lora   { background:transparent; color:var(--accent); border-color:var(--accent); }
   .btn-lora:hover { background:rgba(74,222,128,0.08); }
   .btn-lora.active { background:var(--accent); color:#0f1117; }
-  .btn-wire  { background:transparent; color:#ef4444; border-color:#ef4444; }
+  .btn-wire   { background:transparent; color:#ef4444; border-color:#ef4444; }
   .btn-wire:hover { background:rgba(239,68,68,0.08); }
   .btn-wire.active { background:#ef4444; color:#fff; }
-  .btn-export{ background:transparent; color:#a78bfa; border-color:#a78bfa; }
+  .btn-export { background:transparent; color:#a78bfa; border-color:#a78bfa; }
   .btn-export:hover { background:rgba(167,139,250,0.08); }
-  .btn-clear { background:transparent; color:var(--danger); border-color:var(--danger); }
+  .btn-clear  { background:transparent; color:var(--danger); border-color:var(--danger); }
   .btn-clear:hover { background:rgba(248,113,113,0.08); }
   button:disabled { opacity:0.3; cursor:not-allowed; }
 
@@ -90,18 +89,16 @@
     background:var(--bg); border-bottom:1px solid var(--border);
     letter-spacing:0.05em; min-height:22px; display:flex; align-items:center;
   }
-  .ok-msg { color:var(--accent); }
+  .ok-msg     { color:var(--accent); }
   .locked-msg { color:var(--gold); }
-  .warn-msg { color:#fb923c; }
+  .warn-msg   { color:#fb923c; }
 
   .main { flex:1; display:flex; overflow:hidden; }
 
-  /* ── Map area ── */
   #map-container {
     flex:1; position:relative; overflow:hidden; background:#2a2f3f;
   }
 
-  /* Placeholder shown before any address loaded */
   #placeholder {
     position:absolute; inset:0; display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:12px;
@@ -110,7 +107,6 @@
   }
   #placeholder .icon { font-size:44px; opacity:0.35; }
 
-  /* The iframe — always present once loaded, always visible */
   #map-iframe {
     position:absolute; inset:0; width:100%; height:100%;
     border:none; z-index:2;
@@ -118,28 +114,37 @@
     display:none;
   }
 
-  /* Glass lock panel — sits over iframe when locked, blocks mouse interaction
-     but is fully transparent so the map shows through */
+  /* Transparent blocker — stops iframe mouse events when locked */
   #lock-glass {
     position:absolute; inset:0; z-index:3;
     background:transparent; pointer-events:none;
   }
-  #lock-glass.active { pointer-events:all; cursor:default; }
+  #lock-glass.active { pointer-events:all; }
 
-  /* SVG line layer */
   #line-svg {
     position:absolute; inset:0; width:100%; height:100%;
     pointer-events:none; z-index:8;
   }
 
-  /* Device overlay */
   #overlay {
     position:absolute; inset:0; pointer-events:none; z-index:10;
   }
   #overlay.interactive { pointer-events:all; }
   #overlay.line-mode   { cursor:crosshair; }
 
-  /* ── Devices ── */
+  /* Tile status badge */
+  #tile-status {
+    position:absolute; bottom:8px; left:8px; z-index:20;
+    background:rgba(15,17,23,0.82); border:1px solid var(--border);
+    color:var(--muted); font-family:var(--font); font-size:9px;
+    padding:3px 8px; border-radius:3px; letter-spacing:0.05em;
+    display:none; pointer-events:none;
+  }
+  #tile-status.ready { color:var(--accent); border-color:var(--accent); }
+  #tile-status.loading { color:var(--gold); border-color:var(--gold); }
+  #tile-status.failed { color:var(--danger); border-color:var(--danger); }
+
+  /* Sensor: solid green circle — 1/4 original size */
   .sensor {
     position:absolute; transform:translate(-50%,-50%);
     cursor:grab; user-select:none; pointer-events:all;
@@ -147,43 +152,40 @@
   .sensor:active { cursor:grabbing; }
   .sensor-body {
     border-radius:50%; background:#22c55e;
-    display:flex; align-items:center; justify-content:center;
   }
   .sensor.selected .sensor-body {
     background:#fbbf24;
-    box-shadow:0 0 0 3px #fff, 0 0 0 5px #fbbf24;
+    box-shadow:0 0 0 2px #fff, 0 0 0 4px #fbbf24;
   }
 
+  /* LTX: solid red square */
   .ltx-device {
     position:absolute; transform:translate(-50%,-50%);
     cursor:grab; user-select:none; pointer-events:all;
   }
   .ltx-device:active { cursor:grabbing; }
-  .ltx-body {
-    background:#ef4444;
-    display:flex; align-items:center; justify-content:center;
-  }
+  .ltx-body { background:#ef4444; }
   .ltx-device.selected .ltx-body {
     background:#fbbf24;
-    box-shadow:0 0 0 3px #fff, 0 0 0 5px #fbbf24;
+    box-shadow:0 0 0 2px #fff, 0 0 0 4px #fbbf24;
   }
 
   .device-label {
     position:absolute; left:50%; transform:translateX(-50%);
     background:rgba(255,255,255,0.95); border:1px solid rgba(0,0,0,0.2);
-    color:#111; font-family:var(--font); font-size:10px; font-weight:700;
-    padding:2px 7px; border-radius:3px; white-space:nowrap;
-    pointer-events:none; letter-spacing:0.04em;
+    color:#111; font-family:var(--font); font-size:9px; font-weight:700;
+    padding:1px 5px; border-radius:2px; white-space:nowrap;
+    pointer-events:none; letter-spacing:0.03em;
   }
-  .sensor-label-pos { top:calc(50% + var(--r) + 6px); }
-  .ltx-label-pos    { top:calc(50% + var(--s) + 6px); }
+  .sensor-label-pos { top:calc(50% + var(--r) + 4px); }
+  .ltx-label-pos    { top:calc(50% + var(--s) + 4px); }
   .sensor.selected .device-label,
   .ltx-device.selected .device-label { border-color:#fbbf24; color:#92400e; }
 
   .resize-handle {
-    position:absolute; bottom:-4px; right:-4px;
-    width:11px; height:11px; background:#fff;
-    border:2px solid #22c55e; border-radius:50%;
+    position:absolute; bottom:-3px; right:-3px;
+    width:8px; height:8px; background:#fff;
+    border:1.5px solid #22c55e; border-radius:50%;
     cursor:se-resize; opacity:0; transition:opacity 0.15s;
   }
   .sensor:hover .resize-handle,
@@ -191,16 +193,16 @@
   .sensor.selected .resize-handle { border-color:#fbbf24; }
 
   .ltx-resize {
-    position:absolute; bottom:-4px; right:-4px;
-    width:11px; height:11px; background:#fff;
-    border:2px solid #ef4444; border-radius:50%;
+    position:absolute; bottom:-3px; right:-3px;
+    width:8px; height:8px; background:#fff;
+    border:1.5px solid #ef4444; border-radius:50%;
     cursor:se-resize; opacity:0; transition:opacity 0.15s;
   }
   .ltx-device:hover .ltx-resize,
   .ltx-device.selected .ltx-resize { opacity:1; }
   .ltx-device.selected .ltx-resize { border-color:#fbbf24; }
 
-  /* ── Sidebar ── */
+  /* Sidebar */
   #sidebar {
     width:230px; background:var(--surface);
     border-left:1px solid var(--border);
@@ -261,14 +263,6 @@
   .line-dot.lora { background:repeating-linear-gradient(90deg,#4ade80 0,#4ade80 5px,transparent 5px,transparent 8px); }
   .line-dot.wire { background:repeating-linear-gradient(90deg,#ef4444 0,#ef4444 4px,transparent 4px,transparent 7px); }
   .list-sec { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); padding:6px 4px 2px; opacity:0.7; }
-
-  /* Export watermark strip */
-  #export-note {
-    display:none; position:absolute; bottom:0; left:0; right:0;
-    background:rgba(15,17,23,0.7); color:#7b82a0;
-    font-family:var(--font); font-size:9px; padding:3px 8px;
-    letter-spacing:0.05em; z-index:20; pointer-events:none;
-  }
 </style>
 </head>
 <body>
@@ -299,25 +293,17 @@
 
 <div class="main">
   <div id="map-container">
-
     <div id="placeholder">
       <div class="icon">🛰️</div>
       <div>No location loaded</div>
       <div style="font-size:10px;margin-top:4px;">Enter an address and click Go</div>
     </div>
 
-    <!-- The iframe NEVER gets hidden — it stays visible always -->
     <iframe id="map-iframe" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-    <!-- Transparent glass pane — blocks iframe mouse events when locked -->
     <div id="lock-glass"></div>
-
-    <!-- ArcGIS tile canvas used ONLY for PNG export (hidden from view) -->
-    <canvas id="tile-canvas" style="display:none;position:absolute;left:-9999px;top:-9999px;"></canvas>
-
     <svg id="line-svg" xmlns="http://www.w3.org/2000/svg"></svg>
     <div id="overlay"></div>
-    <div id="export-note"></div>
+    <div id="tile-status"></div>
   </div>
 
   <div id="sidebar">
@@ -340,7 +326,10 @@ let devices = [], lines = [];
 let selectedId = null, devCounter = 0, lineCounter = 0;
 let dragState = null, resizeState = null;
 let lineMode = null, lineFrom = null;
-let tileImageData = null; // stores base64 of ArcGIS tiles for export only
+
+// Tile state for export
+let tileLat = null, tileLon = null;
+let tileState = 'none'; // 'none' | 'loading' | 'ready' | 'failed'
 
 // ── Refs ──────────────────────────────────────────────────────────────────────
 const mapIframe    = document.getElementById('map-iframe');
@@ -359,17 +348,21 @@ const sideAddSensor= document.getElementById('sideAddSensor');
 const sideAddLtx   = document.getElementById('sideAddLtx');
 const mapContainer = document.getElementById('map-container');
 const placeholder  = document.getElementById('placeholder');
-const tileCanvas   = document.getElementById('tile-canvas');
-const tileCtx      = tileCanvas.getContext('2d');
+const tileStatusEl = document.getElementById('tile-status');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function setStatus(msg, type) {
   statusBar.innerHTML = `<span class="${type||''}-msg">${msg}</span>`;
 }
-
 function enableDeviceButtons(on) {
   [addSensorBtn, addLtxBtn, loraBtn, wireBtn, sideAddSensor, sideAddLtx]
     .forEach(b => b.disabled = !on);
+}
+function setTileStatus(state, msg) {
+  tileState = state;
+  tileStatusEl.textContent = msg;
+  tileStatusEl.className = state;
+  tileStatusEl.style.display = state === 'none' ? 'none' : 'block';
 }
 
 // ── Load address ──────────────────────────────────────────────────────────────
@@ -377,96 +370,125 @@ function loadAddress() {
   const addr = document.getElementById('addressInput').value.trim();
   if (!addr) return;
 
-  // Show the iframe immediately with Google Maps satellite
   mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(addr)}&t=k&z=18&output=embed&iwloc=near`;
   mapIframe.style.display = 'block';
   placeholder.style.display = 'none';
-
   mapLoaded = true;
   lockBtn.disabled = false;
   exportBtn.disabled = false;
 
-  // Kick off background tile fetch for export (doesn't affect display)
-  fetchTilesForExport(addr);
-
   if (isLocked) unlock();
-  setStatus(`Loaded: "${addr}" — pan/zoom to find your silos, then click Lock Map.`, 'ok');
+  setStatus(`Loaded: "${addr}" — pan/zoom to find your silos, then Lock Map.`, 'ok');
+
+  // Geocode for tile export
+  setTileStatus('loading', '⟳ Loading export tiles…');
+  tileLat = null; tileLon = null;
+  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1`, {
+    headers: { 'Accept-Language': 'en' }
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (!data || !data[0]) throw new Error('no results');
+    tileLat = parseFloat(data[0].lat);
+    tileLon = parseFloat(data[0].lon);
+    // Warm up: pre-load just the center tile to verify CORS works
+    return testCenterTile(tileLat, tileLon);
+  })
+  .then(() => {
+    setTileStatus('ready', '✓ Export tiles ready');
+    setTimeout(() => setTileStatus('none',''), 3000);
+  })
+  .catch(() => {
+    setTileStatus('failed', '✗ Tile load failed — export may be grey');
+  });
 }
 
 document.getElementById('addressInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') loadAddress();
 });
 
-// ── Fetch tiles into hidden canvas (export only) ──────────────────────────────
-function fetchTilesForExport(addr) {
-  tileImageData = null;
-  fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1`,
-    { headers: { 'Accept-Language': 'en' } })
-  .then(r => r.json())
-  .then(data => {
-    if (!data || !data[0]) return;
-    buildTileCanvas(parseFloat(data[0].lat), parseFloat(data[0].lon));
-  })
-  .catch(() => {}); // silently fail — export will use grey bg
+// Test that we can actually load a tile (verifies CORS + network)
+function testCenterTile(lat, lon) {
+  return new Promise((resolve, reject) => {
+    const { tx, ty, zoom } = latLonToTile(lat, lon, 18);
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload  = resolve;
+    img.onerror = reject;
+    img.src = arcgisTileUrl(zoom, ty, tx) + '?_=' + Date.now();
+  });
 }
 
-function buildTileCanvas(lat, lon) {
-  const rect = mapContainer.getBoundingClientRect();
-  const W = Math.round(rect.width)  || 1100;
-  const H = Math.round(rect.height) || 700;
-  tileCanvas.width  = W;
-  tileCanvas.height = H;
+// ── Tile math ─────────────────────────────────────────────────────────────────
+function latLonToTile(lat, lon, zoom) {
+  const n  = Math.pow(2, zoom);
+  const tx = (lon + 180) / 360 * n;
+  const lr = lat * Math.PI / 180;
+  const ty = (1 - Math.log(Math.tan(lr) + 1/Math.cos(lr)) / Math.PI) / 2 * n;
+  return { tx, ty, zoom };
+}
 
-  const zoom = 18, TILE = 256;
+function arcgisTileUrl(z, row, col) {
+  // row = y (integer), col = x (integer)
+  return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${row}/${col}`;
+}
 
-  function toTile(lat, lon, z) {
-    const n = Math.pow(2, z);
-    const x = (lon + 180) / 360 * n;
-    const latR = lat * Math.PI / 180;
-    const y = (1 - Math.log(Math.tan(latR) + 1/Math.cos(latR)) / Math.PI) / 2 * n;
-    return { x, y };
-  }
+// ── Draw all tiles onto a canvas, return Promise<canvas> ─────────────────────
+function renderTileCanvas(lat, lon, W, H) {
+  return new Promise((resolve) => {
+    const zoom = 18, TILE = 256;
+    const { tx: exactX, ty: exactY } = latLonToTile(lat, lon, zoom);
 
-  const exact = toTile(lat, lon, zoom);
-  const cx = Math.floor(exact.x), cy = Math.floor(exact.y);
-  const fx = exact.x - cx, fy = exact.y - cy;
+    const cx = Math.floor(exactX), cy = Math.floor(exactY);
+    const fx = exactX - cx,        fy = exactY - cy;
 
-  // Canvas pixel where tile (cx,cy) top-left lands
-  const ox = W/2 - fx * TILE;
-  const oy = H/2 - fy * TILE;
+    // Where tile (cx,cy) top-left lands on canvas
+    const ox = W/2 - fx * TILE;
+    const oy = H/2 - fy * TILE;
 
-  const hw = Math.ceil(W / TILE / 2) + 1;
-  const hh = Math.ceil(H / TILE / 2) + 1;
+    const hw = Math.ceil(W / TILE / 2) + 1;
+    const hh = Math.ceil(H / TILE / 2) + 1;
 
-  tileCtx.fillStyle = '#3a4a5a';
-  tileCtx.fillRect(0, 0, W, H);
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#3a4a5a';
+    ctx.fillRect(0, 0, W, H);
 
-  let total = 0, done = 0;
+    // Collect all tile tasks
+    const tasks = [];
+    for (let dx = -hw; dx <= hw; dx++) {
+      for (let dy = -hh; dy <= hh; dy++) {
+        const col = cx + dx, row = cy + dy;
+        const px  = Math.round(ox + dx * TILE);
+        const py  = Math.round(oy + dy * TILE);
+        if (px + TILE < 0 || px > W || py + TILE < 0 || py > H) continue;
+        tasks.push({ col, row, px, py });
+      }
+    }
 
-  for (let dx = -hw; dx <= hw; dx++) {
-    for (let dy = -hh; dy <= hh; dy++) {
-      const tx = cx + dx, ty = cy + dy;
-      const px = Math.round(ox + dx * TILE);
-      const py = Math.round(oy + dy * TILE);
-      if (px + TILE < 0 || px > W || py + TILE < 0 || py > H) continue;
-      total++;
+    if (tasks.length === 0) { resolve(canvas); return; }
 
+    let done = 0;
+    const finish = () => {
+      done++;
+      if (done === tasks.length) {
+        // Lighten to roughly match iframe filter
+        ctx.fillStyle = 'rgba(255,255,255,0.20)';
+        ctx.fillRect(0, 0, W, H);
+        resolve(canvas);
+      }
+    };
+
+    tasks.forEach(({ col, row, px, py }) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.src = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${ty}/${tx}`;
-      img.onload = () => {
-        tileCtx.drawImage(img, px, py, TILE, TILE);
-        done++;
-        if (done === total) {
-          // Lighten to roughly match the iframe filter
-          tileCtx.fillStyle = 'rgba(255,255,255,0.22)';
-          tileCtx.fillRect(0, 0, W, H);
-          tileImageData = tileCanvas.toDataURL('image/jpeg', 0.92);
-        }
-      };
-      img.onerror = () => { done++; };
-    }
-  }
+      // Cache-bust to avoid stale opaque responses
+      img.src = arcgisTileUrl(zoom, row, col) + '?_=1';
+      img.onload = () => { ctx.drawImage(img, px, py, TILE, TILE); finish(); };
+      img.onerror = finish; // skip failed tiles, still resolve
+    });
+  });
 }
 
 // ── Lock / Unlock ─────────────────────────────────────────────────────────────
@@ -476,11 +498,10 @@ function lock() {
   isLocked = true;
   lockBtn.textContent = 'Unlock Map';
   lockBtn.classList.add('locked');
-  // Make glass pane block iframe mouse events — iframe stays VISIBLE
   lockGlass.classList.add('active');
   overlay.classList.add('interactive');
   enableDeviceButtons(true);
-  setStatus('Map locked — place Sensors and LTX, then draw connection lines.', 'locked');
+  setStatus('Map locked — place Sensors and LTX units, draw connection lines.', 'locked');
 }
 
 function unlock() {
@@ -490,7 +511,6 @@ function unlock() {
   wireBtn.classList.remove('active');
   lockBtn.textContent = 'Lock Map';
   lockBtn.classList.remove('locked');
-  // Remove glass — iframe interactive again
   lockGlass.classList.remove('active');
   overlay.classList.remove('interactive', 'line-mode');
   enableDeviceButtons(false);
@@ -502,12 +522,13 @@ function addDevice(type) {
   if (!isLocked) return;
   devCounter++;
   const rect = overlay.getBoundingClientRect();
+  // Default radius: sensor=9 (1/4 of old 36), ltx=7 (1/4 of old 28)
   devices.push({
     id: devCounter, type,
     name: type === 'sensor' ? `Silo ${devCounter}` : `LTX ${devCounter}`,
     x: rect.width  / 2 + (Math.random() - 0.5) * 100,
     y: rect.height / 2 + (Math.random() - 0.5) * 100,
-    r: type === 'sensor' ? 36 : 28
+    r: type === 'sensor' ? 9 : 7
   });
   renderDevices();
   selectDevice(devCounter);
@@ -517,9 +538,7 @@ function addDevice(type) {
 // ── Select ────────────────────────────────────────────────────────────────────
 function selectDevice(id) {
   if (lineMode) { handleLineClick(id); return; }
-  selectedId = id;
-  renderDevices();
-  renderSidebar();
+  selectedId = id; renderDevices(); renderSidebar();
 }
 
 // ── Delete ────────────────────────────────────────────────────────────────────
@@ -529,12 +548,10 @@ function deleteDevice(id) {
   if (selectedId === id) selectedId = null;
   renderDevices(); renderLines(); renderSidebar();
 }
-
 function deleteLine(id) {
   lines = lines.filter(l => l.id !== id);
   renderLines(); renderSidebar();
 }
-
 function clearDevices() {
   devices = []; lines = []; selectedId = null;
   lineMode = null; lineFrom = null;
@@ -542,13 +559,13 @@ function clearDevices() {
   overlay.classList.remove('line-mode');
   renderDevices(); renderLines(); renderSidebar();
 }
-
 function clearAll() {
   clearDevices();
   mapIframe.src = 'about:blank';
   mapIframe.style.display = 'none';
   placeholder.style.display = 'flex';
-  tileImageData = null;
+  tileLat = null; tileLon = null; tileState = 'none';
+  setTileStatus('none','');
   mapLoaded = false; isLocked = false; devCounter = 0; lineCounter = 0;
   lockBtn.textContent = 'Lock Map'; lockBtn.classList.remove('locked'); lockBtn.disabled = true;
   exportBtn.disabled = true;
@@ -565,12 +582,11 @@ function toggleLineMode(type) {
     lineMode = null; lineFrom = null;
     loraBtn.classList.remove('active'); wireBtn.classList.remove('active');
     overlay.classList.remove('line-mode');
-    setStatus('Line mode cancelled.', 'ok');
-    return;
+    setStatus('Line mode cancelled.', 'ok'); return;
   }
   lineMode = type; lineFrom = null;
-  loraBtn.classList.toggle('active', type === 'lora');
-  wireBtn.classList.toggle('active', type === 'wire');
+  loraBtn.classList.toggle('active', type==='lora');
+  wireBtn.classList.toggle('active', type==='wire');
   overlay.classList.add('line-mode');
   setStatus(`${type==='lora'?'LoRa (green dotted)':'Wire (red dotted)'} — click start device, then end device.`, 'warn');
 }
@@ -581,21 +597,15 @@ function handleLineClick(id) {
     setStatus(`"${devices.find(d=>d.id===id).name}" selected — click destination device.`, 'warn');
     return;
   }
-  if (lineFrom === id) {
-    setStatus('Cannot connect a device to itself.', 'warn');
-    return;
-  }
-  const dup = lines.find(l =>
-    (l.fromId===lineFrom && l.toId===id) || (l.fromId===id && l.toId===lineFrom));
-  if (dup) {
-    setStatus('Line already exists between these devices.', 'warn');
-    lineFrom = null; return;
+  if (lineFrom === id) { setStatus('Cannot connect a device to itself.', 'warn'); return; }
+  if (lines.find(l=>(l.fromId===lineFrom&&l.toId===id)||(l.fromId===id&&l.toId===lineFrom))) {
+    setStatus('Line already exists between these devices.', 'warn'); lineFrom=null; return;
   }
   lineCounter++;
   const f = devices.find(d=>d.id===lineFrom);
   const t = devices.find(d=>d.id===id);
-  lines.push({ id: lineCounter, fromId: lineFrom, toId: id, lineType: lineMode });
-  lineFrom = null; selectedId = null;
+  lines.push({ id:lineCounter, fromId:lineFrom, toId:id, lineType:lineMode });
+  lineFrom=null; selectedId=null;
   renderDevices(); renderLines(); renderSidebar();
   setStatus(`Connected "${f.name}" → "${t.name}" via ${lineMode==='lora'?'LoRa':'Wire'}.`, 'ok');
 }
@@ -604,16 +614,15 @@ function handleLineClick(id) {
 function renderLines() {
   lineSvg.innerHTML = '';
   lines.forEach(l => {
-    const f = devices.find(d=>d.id===l.fromId);
-    const t = devices.find(d=>d.id===l.toId);
-    if (!f || !t) return;
+    const f=devices.find(d=>d.id===l.fromId), t=devices.find(d=>d.id===l.toId);
+    if (!f||!t) return;
     const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1', f.x); line.setAttribute('y1', f.y);
-    line.setAttribute('x2', t.x); line.setAttribute('y2', t.y);
-    line.setAttribute('stroke',         l.lineType==='lora' ? '#4ade80' : '#ef4444');
-    line.setAttribute('stroke-width',   l.lineType==='lora' ? 2.5 : 2);
-    line.setAttribute('stroke-dasharray', l.lineType==='lora' ? '9,6' : '5,4');
-    line.setAttribute('stroke-linecap', 'round');
+    line.setAttribute('x1',f.x); line.setAttribute('y1',f.y);
+    line.setAttribute('x2',t.x); line.setAttribute('y2',t.y);
+    line.setAttribute('stroke',           l.lineType==='lora'?'#4ade80':'#ef4444');
+    line.setAttribute('stroke-width',     l.lineType==='lora'?2.5:2);
+    line.setAttribute('stroke-dasharray', l.lineType==='lora'?'9,6':'5,4');
+    line.setAttribute('stroke-linecap',   'round');
     lineSvg.appendChild(line);
   });
 }
@@ -621,20 +630,20 @@ function renderLines() {
 // ── Render devices ────────────────────────────────────────────────────────────
 function renderDevices() {
   overlay.innerHTML = '';
-  devices.forEach(d => d.type === 'sensor' ? renderSensor(d) : renderLTX(d));
+  devices.forEach(d => d.type==='sensor' ? renderSensor(d) : renderLTX(d));
 }
 
 function renderSensor(d) {
   const el = document.createElement('div');
-  el.className = 'sensor' + (d.id===selectedId ? ' selected' : '');
+  el.className = 'sensor' + (d.id===selectedId?' selected':'');
   if (lineMode) el.style.cursor = 'crosshair';
   el.dataset.id = d.id;
-  el.style.left = d.x + 'px'; el.style.top = d.y + 'px';
-  el.style.setProperty('--r', d.r + 'px');
+  el.style.left = d.x+'px'; el.style.top = d.y+'px';
+  el.style.setProperty('--r', d.r+'px');
 
   const body = document.createElement('div');
   body.className = 'sensor-body';
-  body.style.width = body.style.height = (d.r * 2) + 'px';
+  body.style.width = body.style.height = (d.r*2)+'px';
 
   const label = document.createElement('div');
   label.className = 'device-label sensor-label-pos';
@@ -653,15 +662,15 @@ function renderSensor(d) {
 
 function renderLTX(d) {
   const el = document.createElement('div');
-  el.className = 'ltx-device' + (d.id===selectedId ? ' selected' : '');
+  el.className = 'ltx-device' + (d.id===selectedId?' selected':'');
   if (lineMode) el.style.cursor = 'crosshair';
   el.dataset.id = d.id;
-  el.style.left = d.x + 'px'; el.style.top = d.y + 'px';
-  el.style.setProperty('--s', d.r + 'px');
+  el.style.left = d.x+'px'; el.style.top = d.y+'px';
+  el.style.setProperty('--s', d.r+'px');
 
   const body = document.createElement('div');
   body.className = 'ltx-body';
-  body.style.width = body.style.height = (d.r * 2) + 'px';
+  body.style.width = body.style.height = (d.r*2)+'px';
 
   const label = document.createElement('div');
   label.className = 'device-label ltx-label-pos';
@@ -685,9 +694,8 @@ function startDrag(e) {
   const id = parseInt(e.currentTarget.dataset.id);
   if (!lineMode) selectDevice(id);
   const dev = devices.find(d=>d.id===id);
-  dragState = { id, startX: e.clientX - dev.x, startY: e.clientY - dev.y };
+  dragState = { id, startX: e.clientX-dev.x, startY: e.clientY-dev.y };
 }
-
 function startResize(e) {
   e.stopPropagation(); e.preventDefault();
   if (!isLocked) return;
@@ -695,32 +703,28 @@ function startResize(e) {
   selectDevice(id);
   const dev = devices.find(d=>d.id===id);
   const rect = overlay.getBoundingClientRect();
-  resizeState = { id, cx: rect.left + dev.x, cy: rect.top + dev.y };
+  resizeState = { id, cx: rect.left+dev.x, cy: rect.top+dev.y };
 }
-
 document.addEventListener('mousemove', e => {
   if (dragState) {
-    const dev = devices.find(d=>d.id===dragState.id);
-    if (!dev) return;
+    const dev = devices.find(d=>d.id===dragState.id); if (!dev) return;
     const rect = overlay.getBoundingClientRect();
-    dev.x = Math.max(0, Math.min(rect.width,  e.clientX - dragState.startX));
-    dev.y = Math.max(0, Math.min(rect.height, e.clientY - dragState.startY));
+    dev.x = Math.max(0, Math.min(rect.width,  e.clientX-dragState.startX));
+    dev.y = Math.max(0, Math.min(rect.height, e.clientY-dragState.startY));
     renderDevices(); renderLines();
   }
   if (resizeState) {
-    const dev = devices.find(d=>d.id===resizeState.id);
-    if (!dev) return;
-    const dx = e.clientX - resizeState.cx;
-    const dy = e.clientY - resizeState.cy;
-    dev.r = Math.max(12, Math.min(160, Math.sqrt(dx*dx + dy*dy)));
+    const dev = devices.find(d=>d.id===resizeState.id); if (!dev) return;
+    const dx = e.clientX-resizeState.cx, dy = e.clientY-resizeState.cy;
+    dev.r = Math.max(4, Math.min(80, Math.sqrt(dx*dx+dy*dy)));
     renderDevices();
     const sl = document.querySelector(`.size-slider[data-id="${dev.id}"]`);
     const vl = document.querySelector(`.sz-val[data-id="${dev.id}"]`);
     if (sl) sl.value = Math.round(dev.r);
-    if (vl) vl.textContent = Math.round(dev.r) + 'px';
+    if (vl) vl.textContent = Math.round(dev.r)+'px';
   }
 });
-document.addEventListener('mouseup', () => { dragState = null; resizeState = null; });
+document.addEventListener('mouseup', () => { dragState=null; resizeState=null; });
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 function renderSidebar() {
@@ -733,29 +737,29 @@ function renderSidebar() {
     addSec('Devices');
     devices.forEach(d => {
       const item = document.createElement('div');
-      item.className = `dev-item ${d.type}-type` + (d.id===selectedId?' active':'');
+      item.className = `dev-item ${d.type}-type`+(d.id===selectedId?' active':'');
       item.onclick = () => { if (!lineMode) selectDevice(d.id); };
 
-      const top = document.createElement('div'); top.className = 'dev-top';
-      const idLbl = document.createElement('div'); idLbl.className = 'dev-id';
+      const top = document.createElement('div'); top.className='dev-top';
+      const idLbl = document.createElement('div'); idLbl.className='dev-id';
       idLbl.textContent = `${d.type.toUpperCase()} #${String(d.id).padStart(2,'0')}`;
-      const del = document.createElement('button'); del.className = 'dev-del'; del.textContent = '×';
+      const del = document.createElement('button'); del.className='dev-del'; del.textContent='×';
       del.onclick = e => { e.stopPropagation(); deleteDevice(d.id); };
       top.appendChild(idLbl); top.appendChild(del);
 
       const nameIn = document.createElement('input');
       nameIn.type='text'; nameIn.className='dev-name'; nameIn.value=d.name;
       nameIn.onclick = e => e.stopPropagation();
-      nameIn.oninput = e => { d.name = e.target.value; renderDevices(); };
+      nameIn.oninput = e => { d.name=e.target.value; renderDevices(); };
 
       const szRow = document.createElement('div'); szRow.className='dev-size';
-      szRow.innerHTML = '<span>Size</span>';
+      szRow.innerHTML='<span>Size</span>';
       const sl = document.createElement('input');
-      sl.type='range'; sl.min=12; sl.max=160; sl.step=1;
+      sl.type='range'; sl.min=4; sl.max=80; sl.step=1;
       sl.value=Math.round(d.r); sl.className='size-slider'; sl.dataset.id=d.id;
       sl.onclick = e => e.stopPropagation();
       const sv = document.createElement('span'); sv.className='sz-val'; sv.dataset.id=d.id;
-      sv.textContent = Math.round(d.r) + 'px';
+      sv.textContent=Math.round(d.r)+'px';
       sl.oninput = e => { d.r=parseInt(e.target.value); sv.textContent=d.r+'px'; renderDevices(); renderLines(); };
       szRow.appendChild(sl); szRow.appendChild(sv);
 
@@ -779,95 +783,95 @@ function renderSidebar() {
     });
   }
 }
-
 function addSec(txt) {
   const s=document.createElement('div'); s.className='list-sec'; s.textContent=txt;
   deviceList.appendChild(s);
 }
 
 // ── Export PNG ────────────────────────────────────────────────────────────────
-// Composites: ArcGIS tile image (fetched in bg) + lines + devices onto a canvas.
-// The Google Maps iframe cannot be captured due to browser CORS policy —
-// the ArcGIS tiles are the same satellite imagery, CORS-enabled.
-function exportPNG() {
-  setStatus('Generating PNG…', 'ok');
+async function exportPNG() {
+  if (!tileLat || !tileLon) {
+    setStatus('No location loaded — enter an address first.', 'warn');
+    return;
+  }
 
-  const rect  = mapContainer.getBoundingClientRect();
-  const scale = 2;
-  const out   = document.createElement('canvas');
-  out.width   = rect.width  * scale;
-  out.height  = rect.height * scale;
-  const ctx   = out.getContext('2d');
-  ctx.scale(scale, scale);
+  setStatus('Fetching satellite tiles for export…', 'ok');
+  exportBtn.disabled = true;
 
-  function drawDevicesAndDownload() {
-    // Lines
+  try {
+    const rect  = mapContainer.getBoundingClientRect();
+    const W     = Math.round(rect.width);
+    const H     = Math.round(rect.height);
+    const scale = 2;
+
+    // Build the tile canvas fresh at export time — guaranteed to be complete
+    const tileCanvas = await renderTileCanvas(tileLat, tileLon, W, H);
+
+    // Composite onto output canvas at 2x resolution
+    const out = document.createElement('canvas');
+    out.width  = W * scale;
+    out.height = H * scale;
+    const ctx  = out.getContext('2d');
+    ctx.scale(scale, scale);
+
+    // 1 — Satellite tiles
+    ctx.drawImage(tileCanvas, 0, 0, W, H);
+
+    // 2 — Lines
     ctx.save();
     lines.forEach(l => {
       const f=devices.find(d=>d.id===l.fromId), t=devices.find(d=>d.id===l.toId);
       if (!f||!t) return;
-      ctx.strokeStyle = l.lineType==='lora' ? '#4ade80' : '#ef4444';
-      ctx.lineWidth   = l.lineType==='lora' ? 2.5 : 2;
-      ctx.setLineDash( l.lineType==='lora' ? [9,6] : [5,4] );
-      ctx.lineCap = 'round';
+      ctx.strokeStyle = l.lineType==='lora'?'#4ade80':'#ef4444';
+      ctx.lineWidth   = l.lineType==='lora'?2.5:2;
+      ctx.setLineDash( l.lineType==='lora'?[9,6]:[5,4]);
+      ctx.lineCap='round';
       ctx.beginPath(); ctx.moveTo(f.x,f.y); ctx.lineTo(t.x,t.y); ctx.stroke();
     });
     ctx.restore();
 
-    // Devices
+    // 3 — Devices
     devices.forEach(d => {
-      const sel = d.id === selectedId;
+      const sel = d.id===selectedId;
       ctx.save();
-      if (d.type === 'sensor') {
-        ctx.fillStyle = sel ? '#fbbf24' : '#22c55e';
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
-        if (sel) { ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.stroke(); }
+      if (d.type==='sensor') {
+        ctx.fillStyle = sel?'#fbbf24':'#22c55e';
+        ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2); ctx.fill();
+        if (sel) { ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
       } else {
-        ctx.fillStyle = sel ? '#fbbf24' : '#ef4444';
-        ctx.fillRect(d.x-d.r, d.y-d.r, d.r*2, d.r*2);
-        if (sel) { ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.strokeRect(d.x-d.r, d.y-d.r, d.r*2, d.r*2); }
+        ctx.fillStyle = sel?'#fbbf24':'#ef4444';
+        ctx.fillRect(d.x-d.r,d.y-d.r,d.r*2,d.r*2);
+        if (sel) { ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.strokeRect(d.x-d.r,d.y-d.r,d.r*2,d.r*2); }
       }
       ctx.restore();
 
       // Label
-      const ly = d.y + d.r + 14;
+      const ly = d.y + d.r + 12;
       ctx.save();
-      ctx.font = 'bold 11px monospace';
-      const tw = ctx.measureText(d.name).width, pad = 5;
-      ctx.fillStyle = 'rgba(255,255,255,0.94)';
-      ctx.strokeStyle = sel ? '#fbbf24' : 'rgba(0,0,0,0.18)';
-      ctx.lineWidth = 1;
-      rrect(ctx, d.x-tw/2-pad, ly-10, tw+pad*2, 16, 3);
+      ctx.font = 'bold 10px monospace';
+      const tw=ctx.measureText(d.name).width, pad=4;
+      ctx.fillStyle='rgba(255,255,255,0.94)';
+      ctx.strokeStyle=sel?'#fbbf24':'rgba(0,0,0,0.15)';
+      ctx.lineWidth=1;
+      rrect(ctx, d.x-tw/2-pad, ly-9, tw+pad*2, 14, 2);
       ctx.fill(); ctx.stroke();
-      ctx.fillStyle = sel ? '#92400e' : '#111';
+      ctx.fillStyle=sel?'#92400e':'#111';
       ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillText(d.name, d.x, ly-2);
       ctx.restore();
     });
 
+    // 4 — Download
     const link = document.createElement('a');
     link.download = 'silo-map.png';
     link.href = out.toDataURL('image/png');
     link.click();
     setStatus('PNG downloaded successfully.', 'ok');
-  }
 
-  if (tileImageData) {
-    // Use the pre-fetched ArcGIS tile image as background
-    const bg = new Image();
-    bg.onload = () => {
-      ctx.drawImage(bg, 0, 0, rect.width, rect.height);
-      drawDevicesAndDownload();
-    };
-    bg.src = tileImageData;
-  } else {
-    // Tiles not ready yet — grey background with note
-    ctx.fillStyle = '#3a4a5a';
-    ctx.fillRect(0, 0, rect.width, rect.height);
-    ctx.fillStyle = 'rgba(255,255,255,0.15)';
-    ctx.font = '12px monospace';
-    ctx.fillText('Map tiles still loading — re-export in a moment', 20, rect.height - 16);
-    drawDevicesAndDownload();
+  } catch(err) {
+    setStatus('Export failed: ' + err.message, 'warn');
+  } finally {
+    exportBtn.disabled = false;
   }
 }
 
